@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "789758553601",
+    "firebase_url": "https://dogviprefactored.firebaseio.com",
+    "project_id": "dogviprefactored",
+    "storage_bucket": "dogviprefactored.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:789758553601:android:7b3b355fdd084536",
+        "android_client_info": {
+          "package_name": "com.dogvip.giannis.dogviprefactored"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "789758553601-362q7f65merbn8ill1njvpp6nbeafeot.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dogvip.giannis.dogviprefactored",
+            "certificate_hash": "dffdb23d2721c54d755682d85dec4e3032d9216a"
+          }
+        },
+        {
+          "client_id": "789758553601-4fen1ef795g7jc4444m5ij5n6gccjkpm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDh7QcebTsY2234upfVlz8rS74hT-DZt3E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "789758553601-4fen1ef795g7jc4444m5ij5n6gccjkpm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
