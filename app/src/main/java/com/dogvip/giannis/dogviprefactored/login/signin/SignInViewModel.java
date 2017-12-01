@@ -12,8 +12,8 @@ import com.dogvip.giannis.dogviprefactored.responsecontroller.ResponseController
 import com.dogvip.giannis.dogviprefactored.responsecontroller.login.signin.SignInEmailCommand;
 import com.dogvip.giannis.dogviprefactored.responsecontroller.login.signin.SignInUpFbCommand;
 import com.dogvip.giannis.dogviprefactored.responsecontroller.login.signin.SignInUpGoogleCommand;
-import com.dogvip.giannis.dogviprefactored.utilities.NetworkUtls;
-import com.dogvip.giannis.dogviprefactored.utilities.RetryWithDelay;
+import com.dogvip.giannis.dogviprefactored.utilities.network.NetworkUtls;
+import com.dogvip.giannis.dogviprefactored.utilities.network.RetryWithDelay;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
 import java.util.InvalidPropertiesFormatException;
@@ -37,7 +37,7 @@ public class SignInViewModel implements LoginContract.SignInViewModel {
 
     private static final String debugTag = SignInViewModel.class.getSimpleName();
     private LoginRequestManager mLoginRequestManager;
-    private LoginContract.View mViewCallback;
+    private LoginContract.SignInView mViewCallback;
     private AsyncProcessor<Response> mProcessor;
     private int requestState;
     private Disposable mLoginDisp, mTempDisp;
@@ -62,9 +62,9 @@ public class SignInViewModel implements LoginContract.SignInViewModel {
     @Override
     public void onViewAttached(Lifecycle.View viewCallback) {
         this.mViewCallback = (LoginContract.SignInView) viewCallback;
-        signInEmailCommand.setViewCallback((LoginContract.SignInView) mViewCallback);
-        signInUpFbCommand.setViewCallback((LoginContract.SignInUpFbGoogleView) mViewCallback);
-        signInUpGoogleCommand.setViewCallback((LoginContract.SignInUpFbGoogleView) mViewCallback);
+        signInEmailCommand.setViewCallback(mViewCallback);
+        signInUpFbCommand.setViewCallback(mViewCallback);
+        signInUpGoogleCommand.setViewCallback(mViewCallback);
     }
 
     @Override
@@ -114,6 +114,8 @@ public class SignInViewModel implements LoginContract.SignInViewModel {
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnComplete(() -> signInGoogle(request))
                     .subscribe();
+        } else {
+            mViewCallback.onError(R.string.error);
         }
     }
 
@@ -147,7 +149,7 @@ public class SignInViewModel implements LoginContract.SignInViewModel {
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribeWith(new SignInObserver());
 
-        networkUtls.getNetworkFlowable
+        networkUtls.getNetworkFlowable()
                 .doOnSubscribe(subscription -> onProcessing())
                 .flatMap(aBoolean -> responseFlowable
                                             .subscribeOn(Schedulers.io())

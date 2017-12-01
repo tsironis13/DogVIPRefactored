@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.dogvip.giannis.dogviprefactored.R;
@@ -39,8 +40,12 @@ import com.jakewharton.rxbinding2.view.RxView;
 
 import org.json.JSONException;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -115,6 +120,15 @@ public class RegisterFrgmt extends BaseFragment implements LoginContract.SignUpV
             startActivity(intent);
         });
         RxEventBus.add(this, disp3);
+        Disposable disp4 = RxView.clicks(mBinding.backBtn).filter(o -> !mBinding.getProcessing()).subscribe(o -> ((LoginActivity)getActivity()).onCustomNavigationUpButtonClick());
+        RxEventBus.add(this, disp4);
+        mBinding.confpassEdt.setOnEditorActionListener((textView, actionId, keyEvent) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE && mAwesomeValidation.validate()) {
+                ((LoginActivity)getActivity()).hideSoftKeyboard();
+                Completable.timer(300, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread()).subscribe(this::registerEmailUser);
+            }
+            return true;
+        });
     }
 
     @Override
@@ -173,7 +187,7 @@ public class RegisterFrgmt extends BaseFragment implements LoginContract.SignUpV
     @Override
     public void onSuccessEmailSignUp(BaseResponse response) {
         setProcessing(false);
-//        new CommonUtls(getActivity()).buildNotification(getResources().getString(R.string.welcome), getResources().getString(R.string.confirm_account));//change this in the future
+        ((LoginActivity)getActivity()).showNotification(getResources().getString(R.string.welcome), getResources().getString(R.string.confirm_account));
         getFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)

@@ -16,6 +16,8 @@ public class AppConfig {
     public static final int PUBLISH_SUBJ = 0;
     //APPLICATION EVENTS
     public static final int FRAGMENT_ANIMATION = 1000;
+    //back button pressed
+    public static final int KEYCODE_BACK = 4;
     //REQUEST STATE
     public static final int REQUEST_NONE = 0;
     public static final int REQUEST_RUNNING = 10;

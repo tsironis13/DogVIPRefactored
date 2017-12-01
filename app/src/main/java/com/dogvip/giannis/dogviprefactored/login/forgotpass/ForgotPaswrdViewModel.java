@@ -10,8 +10,8 @@ import com.dogvip.giannis.dogviprefactored.requestmanager.LoginRequestManager;
 import com.dogvip.giannis.dogviprefactored.responsecontroller.ResponseController;
 import com.dogvip.giannis.dogviprefactored.responsecontroller.login.forgotpass.SubmitNewPasswordCommand;
 import com.dogvip.giannis.dogviprefactored.responsecontroller.login.forgotpass.ValidateForgotPassEmailCommand;
-import com.dogvip.giannis.dogviprefactored.utilities.NetworkUtls;
-import com.dogvip.giannis.dogviprefactored.utilities.RetryWithDelay;
+import com.dogvip.giannis.dogviprefactored.utilities.network.NetworkUtls;
+import com.dogvip.giannis.dogviprefactored.utilities.network.RetryWithDelay;
 
 import java.util.InvalidPropertiesFormatException;
 
@@ -32,10 +32,9 @@ public class ForgotPaswrdViewModel implements LoginContract.ForgotPassViewModel 
 
     private static final String debugTag = ForgotPaswrdViewModel.class.getSimpleName();
     private LoginRequestManager mLoginRequestManager;
-    private LoginContract.View mViewCallback;
+    private LoginContract.ForgotPassView mViewCallback;
     private AsyncProcessor<Response> mProcessor;
-    private int requestState, userId;
-    private boolean isEmailValid;
+    private int requestState;
     private Disposable mLoginDisp, mTempDisp;
     @Inject
     ResponseController responseController;
@@ -56,8 +55,8 @@ public class ForgotPaswrdViewModel implements LoginContract.ForgotPassViewModel 
     @Override
     public void onViewAttached(Lifecycle.View viewCallback) {
         this.mViewCallback = (LoginContract.ForgotPassView) viewCallback;
-        validateForgotPassEmailCommand.setViewCallback((LoginContract.ForgotPassView) mViewCallback);
-        submitNewPasswordCommand.setViewCallback((LoginContract.ForgotPassView) mViewCallback);
+        validateForgotPassEmailCommand.setViewCallback(mViewCallback);
+        submitNewPasswordCommand.setViewCallback(mViewCallback);
     }
 
     @Override
@@ -98,12 +97,12 @@ public class ForgotPaswrdViewModel implements LoginContract.ForgotPassViewModel 
 
     @Override
     public void handleUserInputAction(ForgotPassRequest request) {
-        if (!isEmailValid && userId == 0) {
+        if (!request.isEmailAuthenticated() || request.getUserId() == 0) {
             request.setAction("validate_forgot_password_email");
             validateForgotPass(request);
         } else {
             request.setAction("submit_new_password");
-            request.setUserId(userId);
+            request.setUserId(request.getUserId());
             submitNewPass(request);
         }
 
@@ -135,7 +134,7 @@ public class ForgotPaswrdViewModel implements LoginContract.ForgotPassViewModel 
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribeWith(new ForgotPassObserver());
 
-        networkUtls.getNetworkFlowable
+        networkUtls.getNetworkFlowable()
                             .doOnSubscribe(subscription -> onProcessing())
                             .flatMap(aBoolean -> responseFlowable
                                                     .subscribeOn(Schedulers.io())
@@ -165,11 +164,6 @@ public class ForgotPaswrdViewModel implements LoginContract.ForgotPassViewModel 
     @Override
     public void setRequestState(int requestState) {
         this.requestState = requestState;
-    }
-
-    public void setEmailValid(int userId, boolean isValid) {
-        this.userId = userId;
-        isEmailValid = isValid;
     }
 
     private class ForgotPassObserver extends DisposableSubscriber<Response> {

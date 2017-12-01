@@ -2,6 +2,7 @@ package com.dogvip.giannis.dogviprefactored.login.forgotpass;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.dogvip.giannis.dogviprefactored.R;
@@ -25,11 +27,16 @@ import com.dogvip.giannis.dogviprefactored.pojo.login.forgotpass.ForgotPassReque
 import com.dogvip.giannis.dogviprefactored.pojo.login.forgotpass.ForgotPassResponse;
 import com.dogvip.giannis.dogviprefactored.utilities.animation.AnimationListener;
 import com.dogvip.giannis.dogviprefactored.utilities.eventbus.RxEventBus;
+import com.dogvip.giannis.dogviprefactored.utilities.notification.NotificationUtls;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -37,10 +44,11 @@ import io.reactivex.disposables.Disposable;
  */
 
 public class ForgotPaswrdFrgmt extends BaseFragment implements LoginContract.ForgotPassView {
-
+    private static final String debugTAag = ForgotPaswrdFrgmt.class.getSimpleName();
     private View mView;
     private ForgotpaswrdFrgmtBinding mBinding;
-    private int fragmentCreatedCode; // login activity: check if fragments are created on button click
+    private int fragmentCreatedCode, userId; // login activity: check if fragments are created on button click
+    private boolean emailAuthenticated;
     @Inject
     ForgotPaswrdViewModel mViewModel;
     @Inject
@@ -85,8 +93,8 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements LoginContract.For
 
         if (savedInstanceState != null) {
             mBinding.setEmailisvalid(savedInstanceState.getBoolean(getResources().getString(R.string.is_forgot_pass_email_valid)));
-        } else {
-            mViewModel.setEmailValid(0, false);
+            userId = savedInstanceState.getInt(getResources().getString(R.string.user_id));
+            emailAuthenticated = savedInstanceState.getBoolean(getResources().getString(R.string.email_authenticated));
         }
     }
 
@@ -98,21 +106,7 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements LoginContract.For
     @Override
     public void onResume() {
         super.onResume();
-        Disposable disp = RxView.clicks(mBinding.submitBtn).subscribe(o -> {
-            mAwesomeValidation.clear();
-            mAwesomeValidation.addValidation(mBinding.emailEdt, Patterns.EMAIL_ADDRESS, getResources().getString(R.string.not_valid_email));
-            if (mBinding.getEmailisvalid()) {
-                mAwesomeValidation.addValidation(mBinding.passEdt, "^(?=.*\\D)[a-zA-Z\\d]{8}$", getResources().getString(R.string.not_valid_pass));
-                mAwesomeValidation.addValidation(mBinding.confpassEdt, mBinding.passEdt, getResources().getString(R.string.passwrds_not_match));
-            }
-            forgotPassRequest.setEmail(mBinding.emailEdt.getText().toString());
-            forgotPassRequest.setConfNewpassword(mBinding.passEdt.getText().toString());
-            forgotPassRequest.setNewpassword(mBinding.confpassEdt.getText().toString());
-            if (mAwesomeValidation.validate()) {
-                ((LoginActivity)getActivity()).hideSoftKeyboard();
-                mViewModel.handleUserInputAction(forgotPassRequest);
-            }
-        });
+        Disposable disp = RxView.clicks(mBinding.submitBtn).subscribe(o -> submit());
         RxEventBus.add(this, disp);
 
         Disposable disp1 = RxView.clicks(mBinding.signInBtn).subscribe(
@@ -131,11 +125,28 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements LoginContract.For
                 .skip(1)
                 .filter(charSequence -> mBinding.getEmailisvalid())
                 .subscribe(charSequence -> {
-                    mAwesomeValidation.clear();
                     mBinding.setEmailisvalid(false);
-                    mViewModel.setEmailValid(0, false);
+                    emailAuthenticated = false;
+                    userId = 0;
                 });
         RxEventBus.add(this, disp2);
+        Disposable disp3 = RxView.clicks(mBinding.backBtn).filter(o -> !mBinding.getProcessing()).subscribe(o -> ((LoginActivity)getActivity()).onCustomNavigationUpButtonClick());
+        RxEventBus.add(this, disp3);
+
+        mBinding.emailEdt.setOnEditorActionListener((textView, actionId, keyEvent) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE && mAwesomeValidation.validate()) {
+                ((LoginActivity)getActivity()).hideSoftKeyboard();
+                Completable.timer(300, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread()).subscribe(this::submit);
+            }
+            return true;
+        });
+        mBinding.confpassEdt.setOnEditorActionListener((textView, actionId, keyEvent) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE && mAwesomeValidation.validate()) {
+                ((LoginActivity)getActivity()).hideSoftKeyboard();
+                Completable.timer(300, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread()).subscribe(this::submit);
+            }
+            return true;
+        });
     }
 
     @Override
@@ -148,12 +159,13 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements LoginContract.For
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(getResources().getString(R.string.is_forgot_pass_email_valid), mBinding.getEmailisvalid());
+        outState.putInt(getResources().getString(R.string.user_id), userId);
+        outState.putBoolean(getResources().getString(R.string.email_authenticated), emailAuthenticated);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        mViewModel.setEmailValid(0, false);
         mForgotPaswrdRetainFragment.retainViewModel(mViewModel);
     }
 
@@ -186,17 +198,18 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements LoginContract.For
 
     @Override
     public void onSuccessIsEmailValid(ForgotPassResponse response) {
-//        mAwesomeValidation.addValidation(mBinding.passEdt, "^(?=.*\\D)[a-zA-Z\\d]{8}$", getResources().getString(R.string.not_valid_pass));
-//        mAwesomeValidation.addValidation(mBinding.confpassEdt, mBinding.passEdt, getResources().getString(R.string.passwrds_not_match));
         setProcessing(false);
+        mBinding.passEdt.getText().clear();
+        mBinding.confpassEdt.getText().clear();
         mBinding.setEmailisvalid(true);
-        mViewModel.setEmailValid(response.getUserId(), true);
+        userId = response.getUserId();
+        emailAuthenticated = true;
     }
 
     @Override
     public void onSuccessNewPassChange(BaseResponse response) {
         setProcessing(false);
-//        new CommonUtls(getActivity()).buildNotification(getResources().getString(R.string.reset_passwrd_request), getResources().getString(R.string.reset_passwrd_success));
+        ((LoginActivity)getActivity()).showNotification(getResources().getString(R.string.reset_passwrd_notfctn_title), getResources().getString(R.string.reset_passwrd_success));
         getFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
@@ -209,6 +222,24 @@ public class ForgotPaswrdFrgmt extends BaseFragment implements LoginContract.For
     public void onError(final int resource) {
         setProcessing(false);
         ((LoginActivity)getActivity()).onError(resource);
+    }
+
+    private void submit() {
+        //            mAwesomeValidation.clear();
+        mAwesomeValidation.addValidation(mBinding.emailEdt, Patterns.EMAIL_ADDRESS, getResources().getString(R.string.not_valid_email));
+//            if (mBinding.getEmailisvalid()) {
+//                mAwesomeValidation.addValidation(mBinding.passEdt, "^(?=.*\\D)[a-zA-Z\\d]{8}$", getResources().getString(R.string.not_valid_pass));
+//                mAwesomeValidation.addValidation(mBinding.confpassEdt, mBinding.passEdt, getResources().getString(R.string.passwrds_not_match));
+//            }
+        forgotPassRequest.setEmailAuthenticated(emailAuthenticated);
+        forgotPassRequest.setEmail(mBinding.emailEdt.getText().toString());
+        forgotPassRequest.setConfNewpassword(mBinding.passEdt.getText().toString());
+        forgotPassRequest.setNewpassword(mBinding.confpassEdt.getText().toString());
+        forgotPassRequest.setUserId(userId);
+        if (mAwesomeValidation.validate()) {
+            ((LoginActivity)getActivity()).hideSoftKeyboard();
+            mViewModel.handleUserInputAction(forgotPassRequest);
+        }
     }
 
     private void setProcessing(boolean processing) {

@@ -24,6 +24,7 @@ public class ForgotPassRequest extends BaseRequest {
     @SerializedName("user_id")
     @Expose
     private int userId;
+    transient private boolean emailAuthenticated;
 
     @Inject
     public ForgotPassRequest() {}
@@ -43,4 +44,8 @@ public class ForgotPassRequest extends BaseRequest {
     public int getUserId() { return userId; }
 
     public void setUserId(int userId) { this.userId = userId; }
+
+    public boolean isEmailAuthenticated() { return emailAuthenticated; }
+
+    public void setEmailAuthenticated(boolean emailAuthenticated) { this.emailAuthenticated = emailAuthenticated; }
 }

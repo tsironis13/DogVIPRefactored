@@ -2,8 +2,12 @@ package com.dogvip.giannis.dogviprefactored.login.signin;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -12,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.dogvip.giannis.dogviprefactored.R;
@@ -41,8 +46,14 @@ import com.jakewharton.rxbinding2.view.RxView;
 
 import org.json.JSONException;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -158,6 +169,17 @@ public class SignInFrgmt extends BaseFragment implements LoginContract.SignInVie
             }
         });
         RxEventBus.add(this, disp4);
+
+        Disposable disp5 = RxView.clicks(mBinding.backBtn).filter(o -> !mBinding.getProcessing()).subscribe(o -> ((LoginActivity)getActivity()).onCustomNavigationUpButtonClick());
+        RxEventBus.add(this, disp5);
+
+        mBinding.passEdt.setOnEditorActionListener((textView, actionId, keyEvent) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE && mAwesomeValidation.validate()) {
+                ((LoginActivity)getActivity()).hideSoftKeyboard();
+                Completable.timer(300, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread()).subscribe(this::signInEmailUser);
+            }
+            return true;
+        });
     }
 
     @Override

@@ -4,9 +4,12 @@
     <color name="colorPrimaryDark">#F57C00</color>
     <color name="colorAccent">#006666</color>
 
+    <color name="colorPrimaryOpaque">#80EEA337</color>
+
     <color name="rippleColor">#F2F57C00</color>
     <color name="error_color">#D32F2F</color>
 
     <color name="facebook_color">#3B5998</color>
     <color name="google_color">#DD4B39</color>
+
 </resources>

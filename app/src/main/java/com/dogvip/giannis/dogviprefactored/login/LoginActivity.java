@@ -7,17 +7,18 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
 import com.dogvip.giannis.dogviprefactored.R;
 import com.dogvip.giannis.dogviprefactored.accountmanager.MyAccountManager;
 import com.dogvip.giannis.dogviprefactored.config.AppConfig;
+import com.dogvip.giannis.dogviprefactored.dashboard.DashboardActivity;
 import com.dogvip.giannis.dogviprefactored.databinding.ActivityLoginBinding;
 import com.dogvip.giannis.dogviprefactored.pojo.login.LoginResponse;
 import com.dogvip.giannis.dogviprefactored.splashscreen.SplashFrgmt;
-import com.dogvip.giannis.dogviprefactored.utilities.UIUtls;
+import com.dogvip.giannis.dogviprefactored.utilities.notification.NotificationUtls;
+import com.dogvip.giannis.dogviprefactored.utilities.ui.UIUtls;
 import com.dogvip.giannis.dogviprefactored.utilities.animation.AnimationUtls;
 import com.dogvip.giannis.dogviprefactored.utilities.eventbus.RxEventBus;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -29,7 +30,6 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 /**
  * Created by giannis on 4/11/2017.
@@ -50,6 +50,8 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
     UIUtls uiUtls;
     @Inject
     AnimationUtls animationUtls;
+    @Inject
+    NotificationUtls mNotificationUtls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,16 +60,16 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         if (getSupportActionBar() != null) getSupportActionBar().hide();
 
-        if (!mAccountManager.checkAccountExists()) {
+        if (mAccountManager.checkAccountExists()) {
 //            getMyAccountManager().getUserData(this);
-//            logUserIn(false);
-            if (savedInstanceState == null && getSupportFragmentManager() != null) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                        .replace(R.id.loginContainer, SplashFrgmt.newInstance(), getResources().getString(R.string.splash_fgmt))
-                        .commit();
-            }
+            logUserIn(false);
+//            if (savedInstanceState == null && getSupportFragmentManager() != null) {
+//                getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+//                        .replace(R.id.loginContainer, SplashFrgmt.newInstance(), getResources().getString(R.string.splash_fgmt))
+//                        .commit();
+//            }
         } else {
             if (savedInstanceState == null && getSupportFragmentManager() != null) {
                 getSupportFragmentManager()
@@ -77,12 +79,7 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
                         .commit();
             }
         }
-        Disposable disp = RxEventBus.createSubject(AppConfig.FRAGMENT_ANIMATION, AppConfig.PUBLISH_SUBJ).observeEvents(Boolean.class).subscribe(new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean animPrgrs) throws Exception {
-                anmtionOnPrgrs = animPrgrs;
-            }
-        });
+        Disposable disp = RxEventBus.createSubject(AppConfig.FRAGMENT_ANIMATION, AppConfig.PUBLISH_SUBJ).observeEvents(Boolean.class).subscribe(animPrgrs -> anmtionOnPrgrs = animPrgrs);
         RxEventBus.add(this, disp);
         /*
          * initialized here to avoid 'Already managing a GoogleApiClient with id 0' exceptions
@@ -130,6 +127,15 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
         }
     }
 
+    public void showNotification(String title, String msg) {
+        mNotificationUtls.buildNotification(title, msg);
+    }
+
+    public void onCustomNavigationUpButtonClick() {
+        hideSoftKeyboard();
+        if (getSupportFragmentManager().getBackStackEntryCount() >= 1) getSupportFragmentManager().popBackStack(getSupportFragmentManager().getBackStackEntryAt(0).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
     public void hideSoftKeyboard() {
         uiUtls.hideSoftKeyboard(this.getCurrentFocus());
     }
@@ -149,8 +155,8 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
     private void logUserIn(boolean userLoggedInFirstTime) {
         Bundle bundle = new Bundle();
         bundle.putBoolean(getResources().getString(R.string.user_logged_in_first_time), userLoggedInFirstTime);
-//        startActivity(new Intent(LoginActivity.this, DashboardActivity.class).putExtras(bundle));
-//        finish();
+        startActivity(new Intent(LoginActivity.this, DashboardActivity.class).putExtras(bundle));
+        finish();
     }
 
     public GoogleApiClient getmGoogleApiClient() {

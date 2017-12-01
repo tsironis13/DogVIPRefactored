@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="useremail"
+            type="String" />
+    </data>
+
+    <FrameLayout
+        android:id="@+id/test2"
+        android:layout_width="match_parent"
+        android:layout_height="172dp"
+        android:paddingLeft="16dp"
+        android:paddingStart="16dp"
+        android:paddingBottom="10dp"
+        android:background="@drawable/pattern"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+        <ImageView
+            android:id="@+id/profileIcon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="@dimen/navigation_drawer_header_margin"
+            android:padding="7dp"
+            android:background="@drawable/navigation_drawer_logo_circle"
+            android:src="@drawable/logo"
+            android:contentDescription="@string/image_cont_desc" />
+
+        <com.rey.material.widget.TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:text="@{useremail}"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:textColor="@android:color/white" />
+
+    </FrameLayout>
+
+</layout>

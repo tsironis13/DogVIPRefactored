@@ -6,6 +6,7 @@
 
     <string name="terms_url">http://dogvip.votingsystem.gr/terms.html</string>
 
+    <string name="app_logo">app_logo</string>
     <string name="image_cont_desc">cont_desc</string>
     <string name="frgmnt_created">frgmnt_created</string>
 
@@ -16,17 +17,24 @@
     <string name="retained_signin_fgmt">retained_signin_fgmt</string>
     <string name="retained_signup_fgmt">retained_signup_fgmt</string>
     <string name="retained_forgotpass_fgmt">retained_forgotpass_fgmt</string>
+    <string name="alert_dialog_fgmt">alert_dialog_fgmt</string>
 
     <string name="facebook_regstr_label">Εγγραφη μεσω facebook</string>
     <string name="google_regstr_label">Εγγραφη μεσω google</string>
     <string name="facebook_singnin_label">Συνδεση μεσω facebook</string>
     <string name="google_signin_label">Συνδεση μεσω google</string>
+    <string name="sign_in_label">Είσοδος στη DogVIP</string>
+    <string name="sign_up_label">Εγγραφή στη DogVIP</string>
+    <string name="forgotpass_label">Ξέχασα τον κωδικό μου</string>
     <string name="logout">Αποσύνδεση</string>
+    <string name="logout_dialog_title">Αποσύνδεση χρήστη. Είσαι σίγουρος?</string>
+    <string name="yes">ΝΑΙ</string>
+    <string name="no">ΟΧΙ</string>
 
-    <string name="email_plhldr">*<u>Email</u></string>
-    <string name="password_plhldr">*<u>Κωδικός</u></string>
-    <string name="confrmpassword_plhldr">*<u>Επιβεβαίωση κωδικού</u></string>
-    <string name="new_password_plhldr">*<u>Νέος κωδικός</u></string>
+    <string name="email_plhldr"><u>Email</u></string>
+    <string name="password_plhldr"><u>Κωδικός</u></string>
+    <string name="confrmpassword_plhldr"><u>Επιβεβαίωση κωδικού</u></string>
+    <string name="new_password_plhldr"><u>Νέος κωδικός</u></string>
 
     <string name="register_user">register_user</string>
     <string name="signin_user">signin_user</string>
@@ -51,7 +59,7 @@
     <string name="passwrds_not_match">Ασυμφωνία κωδικών</string>
     <string name="not_valid_name_fld">Απαιτούνται μόνο χαρακτήρες</string>
     <string name="welcome">Καλωσήρθατε στη DogVIP.</string>
-    <string name="reset_passwrd_request">Αλλαγή κωδικού στη DogVIP.</string>
+    <string name="reset_passwrd_notfctn_title">Αλλαγή κωδικού στη DogVIP.</string>
     <string name="invalid_email">Μη έγκυρο email.</string>
     <string name="email_not_available">Το συγκεκριμένο email υπάρχει.</string>
     <string name="invalid_password">Μη έγκυρος κωδικός.</string>
@@ -61,15 +69,30 @@
     <string name="email_in_use">Το email χρησιμοποιείται από κάποιον αλλο λογαριασμό.</string>
     <string name="email_not_found">Το συγκεκριμένο email δεν βρέθηκε.</string>
     <string name="new_password_is_same">Ο νέος κωδικός δεν μπορεί να είναι ίδιος με τον παλιό.</string>
+    <string name="reset_passwrd_success">Η αλλαγή του κωδικού πραγματοποιήθηκε με επιτυχία.</string>
 
     <!--<string name="required_field">Υποχρεωτικό πεδίο</string>-->
     <string name="required_fields">* Υποχρεωτικά πεδία.</string>
     <string name="terms_label">Όροι χρήσης.</string>
 
+    <!-- DASHBOARD ACTIVITY -->
+    <string name="my_pets">Τα κατοικίδια μου</string>
+    <string name="sitters">Pet Sitters</string>
+    <string name="love_match">Love Match</string>
+    <string name="profs">Επαγγελματίες</string>
+    <string name="sos">Χάθηκα - Βρέθηκα</string>
+    <string name="vets">Κτηνίατροι</string>
+    <string name="offers">Προσφορές</string>
+    <string name="more">Περισσότερα</string>
+    <string name="section_not_available_yet">Η συγκεκριμένη ενότητα θα ενεργοποιηθεί σε νέα έκδοση της εφαρμογής.</string>
+
     <string name="user_logged_in_first_time">user_logged_in_first_time</string>
     <string name="email">email</string>
     <string name="token">token</string>
+    <string name="user_id">user_id</string>
+    <string name="email_authenticated">email_authenticated</string>
     <string name="is_forgot_pass_email_valid">is_forgot_pass_email_valid</string>
+    <string name="default_notification_channel_id">default_channel</string>
 
     <string name="no_internet_connection">Σφάλμα. Χωρίς σύνδεση.</string>
     <string name="error">Σφάλμα. Προσπάθησε ξανά.</string>

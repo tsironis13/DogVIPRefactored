@@ -12,8 +12,8 @@ import com.dogvip.giannis.dogviprefactored.responsecontroller.ResponseController
 import com.dogvip.giannis.dogviprefactored.responsecontroller.login.signin.SignInUpFbCommand;
 import com.dogvip.giannis.dogviprefactored.responsecontroller.login.signin.SignInUpGoogleCommand;
 import com.dogvip.giannis.dogviprefactored.responsecontroller.login.signup.SignUpEmailCommand;
-import com.dogvip.giannis.dogviprefactored.utilities.NetworkUtls;
-import com.dogvip.giannis.dogviprefactored.utilities.RetryWithDelay;
+import com.dogvip.giannis.dogviprefactored.utilities.network.NetworkUtls;
+import com.dogvip.giannis.dogviprefactored.utilities.network.RetryWithDelay;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
 import java.util.InvalidPropertiesFormatException;
@@ -37,7 +37,7 @@ public class RegistrationViewModel implements LoginContract.SignUpViewModel {
 
     private static final String debugTag = RegistrationViewModel.class.getSimpleName();
     private LoginRequestManager mLoginRequestManager;
-    private LoginContract.View mViewCallback;
+    private LoginContract.SignUpView mViewCallback;
     private AsyncProcessor<Response> mProcessor;
     private int requestState;
     private Disposable mLoginDisp, mTempDisp;
@@ -62,9 +62,9 @@ public class RegistrationViewModel implements LoginContract.SignUpViewModel {
     @Override
     public void onViewAttached(Lifecycle.View viewCallback) {
         this.mViewCallback = (LoginContract.SignUpView) viewCallback;
-        signUpEmailCommand.setViewCallback((LoginContract.SignUpView) mViewCallback);
-        signInUpFbCommand.setViewCallback((LoginContract.SignInUpFbGoogleView) mViewCallback);
-        signInUpGoogleCommand.setViewCallback((LoginContract.SignInUpFbGoogleView) mViewCallback);
+        signUpEmailCommand.setViewCallback(mViewCallback);
+        signInUpFbCommand.setViewCallback(mViewCallback);
+        signInUpGoogleCommand.setViewCallback(mViewCallback);
     }
 
     @Override
@@ -108,6 +108,8 @@ public class RegistrationViewModel implements LoginContract.SignUpViewModel {
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnComplete(() -> signUpGoogle(request))
                     .subscribe();
+        } else {
+            mViewCallback.onError(R.string.error);
         }
     }
 
@@ -151,7 +153,7 @@ public class RegistrationViewModel implements LoginContract.SignUpViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new RegistrationObserver());
 
-        networkUtls.getNetworkFlowable
+        networkUtls.getNetworkFlowable()
                 .doOnSubscribe(subscription -> onProcessing())
                 .flatMap(aBoolean -> responseFlowable
                                             .subscribeOn(Schedulers.io())

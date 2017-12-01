@@ -14,4 +14,9 @@ public interface Lifecycle {
         void onViewDetached();
     }
 
+    interface MyAlertDialogCallbackContract {
+        void onPositiveAction();
+        void onNegativeAction();
+    }
+
 }

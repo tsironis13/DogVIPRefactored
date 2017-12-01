@@ -16,9 +16,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:background="@color/colorPrimary">
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/ic_back"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_up_label"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBaseline_toBaselineOf="@+id/backBtn"
+            app:layout_constraintLeft_toRightOf="@+id/backBtn" />
+
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimaryDark"
+            app:layout_constraintTop_toBottomOf="@+id/backBtn"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
         <com.facebook.login.widget.LoginButton
             android:id="@+id/hiddenFbBtn"
@@ -33,11 +61,12 @@
             android:text="@string/facebook_regstr_label"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:layout_marginLeft="10dp"
             android:textColor="@android:color/white"
             android:drawableLeft="@drawable/facebook_icon"
             android:drawableStart="@drawable/facebook_icon"
             android:background="@color/facebook_color"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider1"
             app:layout_constraintLeft_toLeftOf="parent" />
 
         <Button
@@ -47,23 +76,24 @@
             android:text="@string/google_regstr_label"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:layout_marginRight="10dp"
             android:textColor="@android:color/white"
             android:drawableLeft="@drawable/google_icon"
             android:drawableStart="@drawable/google_icon"
             android:background="@color/google_color"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider1"
             app:layout_constraintRight_toRightOf="parent" />
 
-        <ImageView
-            android:id="@+id/divider"
-            android:layout_width="65dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:contentDescription="@string/image_cont_desc"
-            app:srcCompat="@android:color/darker_gray"
-            app:layout_constraintTop_toBottomOf="@+id/googleBtn"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+        <!--<ImageView-->
+            <!--android:id="@+id/divider"-->
+            <!--android:layout_width="65dp"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:contentDescription="@string/image_cont_desc"-->
+            <!--app:srcCompat="@android:color/darker_gray"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/googleBtn"-->
+            <!--app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--app:layout_constraintRight_toRightOf="parent" />-->
 
         <LinearLayout
             android:id="@+id/emailLlt"
@@ -75,7 +105,7 @@
             android:gravity="center_vertical"
             android:elevation="2dp"
             android:weightSum="1"
-            app:layout_constraintTop_toBottomOf="@+id/divider"
+            app:layout_constraintTop_toBottomOf="@+id/googleBtn"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
 
@@ -90,7 +120,7 @@
             <EditText
                 android:id="@+id/emailEdt"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="0.86"
                 android:textSize="12sp"
                 android:paddingRight="8dp"
@@ -124,10 +154,12 @@
             <EditText
                 android:id="@+id/passEdt"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="0.86"
                 android:textSize="12sp"
                 android:paddingRight="8dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
                 android:hint="@string/password_plhldr"
                 android:background="@android:color/transparent"
                 android:inputType="textPassword" />
@@ -135,7 +167,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/confpassLlt"
+            android:id="@+id/confPassLlt"
             android:layout_width="270dp"
             android:layout_height="48dp"
             android:orientation="horizontal"
@@ -158,57 +190,60 @@
             <EditText
                 android:id="@+id/confpassEdt"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="0.86"
                 android:textSize="12sp"
                 android:paddingRight="8dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
                 android:hint="@string/confrmpassword_plhldr"
                 android:background="@android:color/transparent"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:imeOptions="actionDone" />
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="270dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="23dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="start"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:textStyle="bold"
-            android:textSize="12sp"
-            android:textColor="@color/error_color"
-            android:text="@string/required_fields"
-            app:layout_constraintTop_toBottomOf="@+id/confpassLlt"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+        <!--<TextView-->
+            <!--android:layout_width="270dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="2dp"-->
+            <!--android:layout_marginBottom="23dp"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:gravity="start"-->
+            <!--android:layout_marginLeft="5dp"-->
+            <!--android:layout_marginStart="5dp"-->
+            <!--android:textStyle="bold"-->
+            <!--android:textSize="12sp"-->
+            <!--android:textColor="@color/error_color"-->
+            <!--android:text="@string/required_fields"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/confpassLlt"-->
+            <!--app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--app:layout_constraintRight_toRightOf="parent" />-->
 
         <Button
             android:id="@+id/registerBtn"
-            android:layout_width="222dp"
+            android:layout_width="270dp"
             android:layout_height="48dp"
             android:text="@string/register_btn_label"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:textColor="@android:color/white"
             android:background="@drawable/ripple_drawable"
             android:visibility="@{processing ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/confPassLlt"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 
         <LinearLayout
             android:id="@+id/loadingIndLlt"
-            android:layout_width="222dp"
+            android:layout_width="270dp"
             android:layout_height="48dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/ripple_drawable"
             android:elevation="2dp"
             android:visibility="@{!processing ? View.GONE : View.VISIBLE}"
             android:orientation="vertical"
             android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/confPassLlt"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
 

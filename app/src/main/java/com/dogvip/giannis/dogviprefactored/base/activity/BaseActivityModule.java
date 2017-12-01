@@ -11,7 +11,7 @@ import dagger.Module;
 /**
  * Created by giannis on 4/11/2017.
  */
-@Module(includes = AccountManagerModule.class)
+@Module
 public abstract class BaseActivityModule {
 
     @Binds

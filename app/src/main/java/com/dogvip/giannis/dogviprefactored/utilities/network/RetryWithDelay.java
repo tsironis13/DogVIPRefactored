@@ -1,4 +1,4 @@
-package com.dogvip.giannis.dogviprefactored.utilities;
+package com.dogvip.giannis.dogviprefactored.utilities.network;
 
 import org.reactivestreams.Publisher;
 
@@ -49,15 +49,9 @@ public class RetryWithDelay implements Function<Flowable<? extends Throwable>, F
 
     @Override
     public Flowable<?> apply(@NonNull Flowable<? extends Throwable> throwableFlowable) throws Exception {
-        return throwableFlowable.flatMap(new Function<Throwable, Publisher<?>>() {
-            @Override
-            public Publisher<?> apply(@NonNull Throwable throwable) throws Exception {
-                if (++retryCount < maxRetries) {
-//                    requestState = AppConfig.REQUEST_RUNNING;
-                    return Flowable.timer(retryDelayMillis, TimeUnit.MILLISECONDS);
-                }
-                return Flowable.error(new IllegalStateException());
-            }
+        return throwableFlowable.flatMap((Function<Throwable, Publisher<?>>) throwable -> {
+            if (++retryCount < maxRetries) return Flowable.timer(retryDelayMillis, TimeUnit.MILLISECONDS);
+            return Flowable.error(new IllegalStateException());
         });
     }
 

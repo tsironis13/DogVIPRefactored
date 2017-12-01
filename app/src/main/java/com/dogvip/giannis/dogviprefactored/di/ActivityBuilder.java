@@ -1,8 +1,13 @@
 package com.dogvip.giannis.dogviprefactored.di;
 
+import com.dogvip.giannis.dogviprefactored.accountmanager.AccountManagerModule;
+import com.dogvip.giannis.dogviprefactored.base.activity.BaseActivityModule;
+import com.dogvip.giannis.dogviprefactored.dashboard.DashboardActivity;
+import com.dogvip.giannis.dogviprefactored.dashboard.DashboardActivityModule;
 import com.dogvip.giannis.dogviprefactored.di.scope.PerActivity;
 import com.dogvip.giannis.dogviprefactored.login.LoginActivity;
 import com.dogvip.giannis.dogviprefactored.login.LoginActivityModule;
+import com.dogvip.giannis.dogviprefactored.utilities.notification.NotificationUtlsModule;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -14,7 +19,11 @@ import dagger.android.ContributesAndroidInjector;
 abstract class ActivityBuilder {
 
     @PerActivity
-    @ContributesAndroidInjector(modules = {LoginActivityModule.class})
+    @ContributesAndroidInjector(modules = {LoginActivityModule.class, AccountManagerModule.class, NotificationUtlsModule.class})
     abstract LoginActivity bindLoginActivity();
+
+    @PerActivity
+    @ContributesAndroidInjector(modules = {DashboardActivityModule.class, AccountManagerModule.class})
+    abstract DashboardActivity bindDashboardActivity();
 
 }

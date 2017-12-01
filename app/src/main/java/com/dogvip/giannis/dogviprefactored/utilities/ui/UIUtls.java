@@ -1,4 +1,4 @@
-package com.dogvip.giannis.dogviprefactored.utilities;
+package com.dogvip.giannis.dogviprefactored.utilities.ui;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -8,11 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
-
-import java.util.concurrent.Callable;
-
 import javax.inject.Inject;
-
 import io.reactivex.Maybe;
 import io.reactivex.MaybeEmitter;
 import io.reactivex.MaybeOnSubscribe;
@@ -66,7 +62,7 @@ public class UIUtls {
         Snackbar snackbar = Snackbar.make(view, msg, length);
         snackbar.setActionTextColor(ContextCompat.getColor(mContext, android.R.color.black));
         View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
         sbView.setBackgroundColor(ContextCompat.getColor(mContext, android.R.color.white));
         textView.setTextColor(ContextCompat.getColor(mContext, android.R.color.holo_red_light));
         return snackbar;

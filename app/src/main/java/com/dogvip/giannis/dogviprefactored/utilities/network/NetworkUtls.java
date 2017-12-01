@@ -1,4 +1,4 @@
-package com.dogvip.giannis.dogviprefactored.utilities;
+package com.dogvip.giannis.dogviprefactored.utilities.network;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -21,13 +21,15 @@ public class NetworkUtls {
         this.mContext = context;
     }
 
-    public Flowable<Boolean> getNetworkFlowable = Flowable.create(e -> {
-        if (isNetworkAvailable()) {
-            e.onNext(true);
-        } else {
-            e.onError(new Throwable());
-        }
-    }, BackpressureStrategy.LATEST);
+    public Flowable<Boolean> getNetworkFlowable() {
+        return Flowable.create(e -> {
+            if (isNetworkAvailable()) {
+                e.onNext(true);
+            } else {
+                e.onError(new Throwable());
+            }
+        }, BackpressureStrategy.LATEST);
+    }
 
     private Boolean isNetworkAvailable() {
         ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
