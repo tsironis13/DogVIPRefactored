@@ -49,12 +49,14 @@ public class MyAccountManager {
         return am.getAccountsByType(mContext.getResources().getString(R.string.account_type)).length != 0;
     }
 
-    public boolean addAccount(String email, String token) {
+    public boolean addAccount(String email, String token, int user_id) {
         if (checkAccountExists()) return false;
         Account account = new Account(email, mContext.getResources().getString(R.string.account_type));
 
         Bundle extra = new Bundle();
         extra.putString(mContext.getResources().getString(R.string.email), email);
+//        Log.e("kjaskas", user_id + " user id");
+        extra.putString(mContext.getResources().getString(R.string.user_id), String.valueOf(user_id));
         extra.putString(mContext.getResources().getString(R.string.token), token); //used by me to get auth token easily without passing it between activities
         boolean account_added = am.addAccountExplicitly(account, null, extra);
         am.setAuthToken(account, "1", token); //used by the authenticator
@@ -62,16 +64,16 @@ public class MyAccountManager {
     }
 
     public UserAccount getAccountDetails() {
-//        UserAccount userAccount = new UserAccount();//inject
         Account mAccount = getAccountByType(mContext.getResources().getString(R.string.account_type));
-        try {
-            String mtoken = AccountManager.get(mContext).getUserData(mAccount, mContext.getResources().getString(R.string.token));
-            String email = AccountManager.get(mContext).getUserData(mAccount, mContext.getResources().getString(R.string.email));
-            userAccount.setToken(mtoken);
-            userAccount.setEmail(email);
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        }
+        if (mAccount == null) return null;
+
+        String mtoken = AccountManager.get(mContext).getUserData(mAccount, mContext.getResources().getString(R.string.token));
+        String email = AccountManager.get(mContext).getUserData(mAccount, mContext.getResources().getString(R.string.email));
+        String userId = AccountManager.get(mContext).getUserData(mAccount, mContext.getResources().getString(R.string.user_id));
+        userAccount.setToken(mtoken);
+        userAccount.setEmail(email);
+        userAccount.setUserId(Integer.parseInt(userId));
+
         return userAccount;
     }
 

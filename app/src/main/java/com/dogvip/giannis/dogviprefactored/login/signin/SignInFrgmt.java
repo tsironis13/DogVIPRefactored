@@ -291,6 +291,7 @@ public class SignInFrgmt extends BaseFragment implements LoginContract.SignInVie
         signInEmailRequest.setAction(getResources().getString(R.string.signin_user));
         signInEmailRequest.setEmail(mBinding.emailEdt.getText().toString());
         signInEmailRequest.setPassword(mBinding.passEdt.getText().toString());
+        signInEmailRequest.setDeviceid(android.os.Build.SERIAL);
         signInEmailRequest.setRegtype(0); //0 -> email registr
         mViewModel.signInEmail(signInEmailRequest);
     }

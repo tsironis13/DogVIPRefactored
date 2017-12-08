@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -62,15 +63,15 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
 
         if (mAccountManager.checkAccountExists()) {
 //            getMyAccountManager().getUserData(this);
-            logUserIn(false);
-//            if (savedInstanceState == null && getSupportFragmentManager() != null) {
-//                getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-//                        .replace(R.id.loginContainer, SplashFrgmt.newInstance(), getResources().getString(R.string.splash_fgmt))
-//                        .commit();
-//            }
+            logUserIn();
         } else {
+            Disposable disp = RxEventBus.createSubject(AppConfig.FRAGMENT_ANIMATION, AppConfig.PUBLISH_SUBJ).observeEvents(Boolean.class).subscribe(animPrgrs -> anmtionOnPrgrs = animPrgrs);
+            RxEventBus.add(this, disp);
+            /*
+             * initialized here to avoid 'Already managing a GoogleApiClient with id 0' exceptions
+             * disconnect and stop managing Google client in onPause()
+             */
+            mGoogleApiClient.connect();
             if (savedInstanceState == null && getSupportFragmentManager() != null) {
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -79,13 +80,6 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
                         .commit();
             }
         }
-        Disposable disp = RxEventBus.createSubject(AppConfig.FRAGMENT_ANIMATION, AppConfig.PUBLISH_SUBJ).observeEvents(Boolean.class).subscribe(animPrgrs -> anmtionOnPrgrs = animPrgrs);
-        RxEventBus.add(this, disp);
-        /*
-         * initialized here to avoid 'Already managing a GoogleApiClient with id 0' exceptions
-         * disconnect and stop managing Google client in onPause()
-         */
-        mGoogleApiClient.connect();
     }
 
     @Override
@@ -145,17 +139,15 @@ public class LoginActivity extends AppCompatActivity implements HasSupportFragme
     }
 
     public void addAccount(LoginResponse response) {
-        if (mAccountManager.addAccount(response.getEmail(), response.getAuthtoken())) {
-            logUserIn(true);
+        if (mAccountManager.addAccount(response.getEmail(), response.getAuthtoken(), response.getUser_id())) {
+            logUserIn();
         } else {
             onError(AppConfig.getCodes().get(AppConfig.STATUS_ERROR));
         }
     }
 
-    private void logUserIn(boolean userLoggedInFirstTime) {
-        Bundle bundle = new Bundle();
-        bundle.putBoolean(getResources().getString(R.string.user_logged_in_first_time), userLoggedInFirstTime);
-        startActivity(new Intent(LoginActivity.this, DashboardActivity.class).putExtras(bundle));
+    private void logUserIn() {
+        startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
         finish();
     }
 

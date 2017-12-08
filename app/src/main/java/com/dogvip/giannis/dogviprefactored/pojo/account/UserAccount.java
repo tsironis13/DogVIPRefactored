@@ -1,5 +1,7 @@
 package com.dogvip.giannis.dogviprefactored.pojo.account;
 
+import java.io.Serializable;
+
 import javax.inject.Inject;
 
 /**
@@ -9,6 +11,7 @@ import javax.inject.Inject;
 public class UserAccount {
 
     private String mtoken, email;
+    private int userId;
 
     @Inject
     public UserAccount() {}
@@ -17,8 +20,8 @@ public class UserAccount {
         return mtoken;
     }
 
-    public void setToken(String mtoken) {
-        this.mtoken = mtoken;
+    public void setToken(String token) {
+        this.mtoken = token;
     }
 
     public String getEmail() {
@@ -28,4 +31,8 @@ public class UserAccount {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public int getUserId() { return userId; }
+
+    public void setUserId(int userId) { this.userId = userId; }
 }

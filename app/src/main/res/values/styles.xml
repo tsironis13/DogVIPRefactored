@@ -25,6 +25,10 @@
         <item name="android:textSize">15sp</item>
     </style>
 
+    <!-- IMAGE UPLOAD PROGRESS BAR -->
+    <style name="ProcessingImageProgressBarStyle">
+        <item name="colorAccent">@android:color/white</item>
+    </style>
 
 
 </resources>

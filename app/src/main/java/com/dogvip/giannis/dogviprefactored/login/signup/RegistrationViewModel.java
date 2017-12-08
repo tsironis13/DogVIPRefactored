@@ -1,5 +1,8 @@
 package com.dogvip.giannis.dogviprefactored.login.signup;
 
+import android.accounts.NetworkErrorException;
+import android.util.Log;
+
 import com.dogvip.giannis.dogviprefactored.R;
 import com.dogvip.giannis.dogviprefactored.config.AppConfig;
 import com.dogvip.giannis.dogviprefactored.lifecycle.Lifecycle;
@@ -25,6 +28,7 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.processors.AsyncProcessor;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
@@ -178,15 +182,21 @@ public class RegistrationViewModel implements LoginContract.SignUpViewModel {
     }
 
     private void handleError(Throwable throwable) {
-//        Log.e("ddd", throwable + " throwable "+ mViewCallback + " callbacl");
-        if (throwable instanceof IllegalStateException) { //server error
-            mViewCallback.onError(R.string.error);
-        } else if (throwable instanceof InvalidPropertiesFormatException) {
-//            mViewCallback.onError(R.string.please_fill_out_search_filters);
-        } else {//no network connection error
-//            Log.e(debugTag, " on error");
+        //no network connection error
+        if (throwable instanceof NetworkErrorException) {
             mViewCallback.onError(R.string.no_internet_connection);
+        } else {
+            mViewCallback.onError(R.string.error);
         }
+////        Log.e("ddd", throwable + " throwable "+ mViewCallback + " callbacl");
+//        if (throwable instanceof IllegalStateException) { //server error
+//            mViewCallback.onError(R.string.error);
+//        } else if (throwable instanceof InvalidPropertiesFormatException) {
+////            mViewCallback.onError(R.string.please_fill_out_search_filters);
+//        } else {//no network connection error
+////            Log.e(debugTag, " on error");
+//            mViewCallback.onError(R.string.no_internet_connection);
+//        }
     }
 
     @Override

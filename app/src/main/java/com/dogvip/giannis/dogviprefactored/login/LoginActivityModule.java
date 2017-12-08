@@ -11,7 +11,6 @@ import com.dogvip.giannis.dogviprefactored.login.forgotpass.ForgotPaswrdFrgmt;
 import com.dogvip.giannis.dogviprefactored.login.signin.SignInFrgmt;
 import com.dogvip.giannis.dogviprefactored.login.signup.RegisterFrgmt;
 import com.dogvip.giannis.dogviprefactored.splashscreen.SplashFrgmt;
-import com.dogvip.giannis.dogviprefactored.utilities.animation.AnimationListener;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;

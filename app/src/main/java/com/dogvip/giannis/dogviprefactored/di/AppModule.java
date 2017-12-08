@@ -1,11 +1,14 @@
 package com.dogvip.giannis.dogviprefactored.di;
 
 import android.app.Application;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 
+import com.dogvip.giannis.dogviprefactored.app.MyApp;
 import com.dogvip.giannis.dogviprefactored.config.AppConfig;
 import com.dogvip.giannis.dogviprefactored.di.qualifiers.ApplicationContext;
 import com.dogvip.giannis.dogviprefactored.retrofit.ServiceAPI;
+import com.dogvip.giannis.dogviprefactored.room_persistence_data.DogVipRoomDatabase;
 
 import java.util.concurrent.TimeUnit;
 
@@ -13,6 +16,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import dagger.android.AndroidInjectionModule;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -22,8 +26,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by giannis on 4/11/2017.
  */
-@Module
+@Module(includes = AndroidInjectionModule.class)
 public class AppModule {
+
+    @Provides
+    Application application(MyApp myApp) {
+        return myApp;
+    }
 
     @Provides
     @ApplicationContext
@@ -67,6 +76,12 @@ public class AppModule {
     @Singleton
     ServiceAPI provideServiceAPI(Retrofit retrofit) {
         return retrofit.create(ServiceAPI.class);
+    }
+
+    @Provides
+    @Singleton
+    DogVipRoomDatabase provideDogVipRoomDatabase(@ApplicationContext Context context) {
+        return Room.databaseBuilder(context, DogVipRoomDatabase.class, "dogVIP_database").build();
     }
 
 }

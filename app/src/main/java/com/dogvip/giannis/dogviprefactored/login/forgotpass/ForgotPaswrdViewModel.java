@@ -1,5 +1,7 @@
 package com.dogvip.giannis.dogviprefactored.login.forgotpass;
 
+import android.accounts.NetworkErrorException;
+
 import com.dogvip.giannis.dogviprefactored.R;
 import com.dogvip.giannis.dogviprefactored.config.AppConfig;
 import com.dogvip.giannis.dogviprefactored.lifecycle.Lifecycle;
@@ -151,14 +153,20 @@ public class ForgotPaswrdViewModel implements LoginContract.ForgotPassViewModel 
     }
 
     private void handleError(Throwable throwable) {
-        if (throwable instanceof IllegalStateException) { //server error
-            mViewCallback.onError(R.string.error);
-        } else if (throwable instanceof InvalidPropertiesFormatException) {
-//            mViewCallback.onError(R.string.please_fill_out_search_filters);
-        } else {//no network connection error
-//            Log.e(debugTag, " on error");
+        //no network connection error
+        if (throwable instanceof NetworkErrorException) {
             mViewCallback.onError(R.string.no_internet_connection);
+        } else {
+            mViewCallback.onError(R.string.error);
         }
+//        if (throwable instanceof IllegalStateException) { //server error
+//            mViewCallback.onError(R.string.error);
+//        } else if (throwable instanceof InvalidPropertiesFormatException) {
+////            mViewCallback.onError(R.string.please_fill_out_search_filters);
+//        } else {//no network connection error
+////            Log.e(debugTag, " on error");
+//            mViewCallback.onError(R.string.no_internet_connection);
+//        }
     }
 
     @Override

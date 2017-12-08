@@ -3,8 +3,6 @@ package com.dogvip.giannis.dogviprefactored.base.activity;
 import android.app.Activity;
 import android.content.Context;
 
-import com.dogvip.giannis.dogviprefactored.accountmanager.AccountManagerModule;
-
 import dagger.Binds;
 import dagger.Module;
 

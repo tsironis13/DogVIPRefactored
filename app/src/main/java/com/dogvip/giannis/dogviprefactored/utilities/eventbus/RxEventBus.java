@@ -1,5 +1,6 @@
 package com.dogvip.giannis.dogviprefactored.utilities.eventbus;
 
+import android.util.Log;
 import android.util.SparseArray;
 
 import java.util.HashMap;
@@ -20,7 +21,7 @@ import io.reactivex.subjects.Subject;
  */
 
 public class RxEventBus<T> {
-
+    private static final String debugTag = RxEventBus.class.getSimpleName();
     private Subject<T> subject;
     private static SparseArray<RxEventBus> mInstanceMap = new SparseArray<>();
     private static SparseArray<Subject> sSubjectMap = new SparseArray<>();
@@ -84,6 +85,7 @@ public class RxEventBus<T> {
 
     public static void unregister(Object lifecycle) {
 //        //We have to remove the composition from the map, because once you unsubscribe it can't be used anymore
+//        Log.e(debugTag, sSubscriptionsMap.get(lifecycle) + " disposabel lifecycle: "+ lifecycle);
         CompositeDisposable compositeSubscription = sSubscriptionsMap.remove(lifecycle);
         if (compositeSubscription != null) if (!compositeSubscription.isDisposed()) compositeSubscription.dispose();
     }

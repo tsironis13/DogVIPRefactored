@@ -17,6 +17,7 @@
     <string name="retained_signin_fgmt">retained_signin_fgmt</string>
     <string name="retained_signup_fgmt">retained_signup_fgmt</string>
     <string name="retained_forgotpass_fgmt">retained_forgotpass_fgmt</string>
+    <string name="retained_dashboard_act">retained_dashboard_act</string>
     <string name="alert_dialog_fgmt">alert_dialog_fgmt</string>
 
     <string name="facebook_regstr_label">Εγγραφη μεσω facebook</string>
@@ -35,10 +36,11 @@
     <string name="password_plhldr"><u>Κωδικός</u></string>
     <string name="confrmpassword_plhldr"><u>Επιβεβαίωση κωδικού</u></string>
     <string name="new_password_plhldr"><u>Νέος κωδικός</u></string>
-
+    <!--REQUEST ACTIONS-->
     <string name="register_user">register_user</string>
     <string name="signin_user">signin_user</string>
     <string name="forgot_paswrd">forgot_password</string>
+    <string name="save_registration_token">save_registration_token</string>
 
     <string name="signin_btn_label">Εισοδος</string>
     <string name="register_btn_label">Εγγραφη</string>
@@ -70,6 +72,20 @@
     <string name="email_not_found">Το συγκεκριμένο email δεν βρέθηκε.</string>
     <string name="new_password_is_same">Ο νέος κωδικός δεν μπορεί να είναι ίδιος με τον παλιό.</string>
     <string name="reset_passwrd_success">Η αλλαγή του κωδικού πραγματοποιήθηκε με επιτυχία.</string>
+    <string name="required_fields_owner">* Υποχρεωτικά πεδία. \n \n ** Με τα παρακάτω στοιχεία καταχωρείσαι σαν ιδιοκτήτης στην εφαρμογή.</string>
+    <string name="profile_photo_gr">ΕΙΚΟΝΑ ΠΡΟΦΙΛ</string>
+    <string name="surname_gr">ΕΠΙΘΕΤΟ</string>
+    <string name="city_gr">ΠΟΛΗ</string>
+    <string name="birthdate_gr">ΗΜ. ΓΕΝΝΗΣΗΣ</string>
+    <string name="name_gr">ΟΝΟΜΑ</string>
+    <string name="phone_gr">ΤΗΛΕΦΩΝΟ</string>
+    <string name="save">ΑΠΟΘΗΚΕΥΣΗ</string>
+    <string name="image_size_limit">Όριο εικόνας: 6MB</string>
+    <string name="name_plhldr">*<u>Όνομα</u></string>
+    <string name="surname_plhldr">*<u>Επίθετο</u></string>
+    <string name="birth_date_plhldr">*<u>Ημ. γέννησης</u></string>
+    <string name="city_plhldr"><u>Πόλη</u></string>
+    <string name="phone_plhldr"><u>Τηλέφωνο</u></string>
 
     <!--<string name="required_field">Υποχρεωτικό πεδίο</string>-->
     <string name="required_fields">* Υποχρεωτικά πεδία.</string>
@@ -86,13 +102,13 @@
     <string name="more">Περισσότερα</string>
     <string name="section_not_available_yet">Η συγκεκριμένη ενότητα θα ενεργοποιηθεί σε νέα έκδοση της εφαρμογής.</string>
 
-    <string name="user_logged_in_first_time">user_logged_in_first_time</string>
     <string name="email">email</string>
     <string name="token">token</string>
     <string name="user_id">user_id</string>
     <string name="email_authenticated">email_authenticated</string>
     <string name="is_forgot_pass_email_valid">is_forgot_pass_email_valid</string>
     <string name="default_notification_channel_id">default_channel</string>
+    <string name="owner_exists">owner_exists</string>
 
     <string name="no_internet_connection">Σφάλμα. Χωρίς σύνδεση.</string>
     <string name="error">Σφάλμα. Προσπάθησε ξανά.</string>

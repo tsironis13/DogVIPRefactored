@@ -1,5 +1,8 @@
 package com.dogvip.giannis.dogviprefactored.login.signin;
 
+import android.accounts.NetworkErrorException;
+import android.util.Log;
+
 import com.dogvip.giannis.dogviprefactored.R;
 import com.dogvip.giannis.dogviprefactored.config.AppConfig;
 import com.dogvip.giannis.dogviprefactored.lifecycle.Lifecycle;
@@ -12,11 +15,14 @@ import com.dogvip.giannis.dogviprefactored.responsecontroller.ResponseController
 import com.dogvip.giannis.dogviprefactored.responsecontroller.login.signin.SignInEmailCommand;
 import com.dogvip.giannis.dogviprefactored.responsecontroller.login.signin.SignInUpFbCommand;
 import com.dogvip.giannis.dogviprefactored.responsecontroller.login.signin.SignInUpGoogleCommand;
+import com.dogvip.giannis.dogviprefactored.room_persistence_data.DogVipRoomDatabase;
+import com.dogvip.giannis.dogviprefactored.room_persistence_data.entities.UserRole;
 import com.dogvip.giannis.dogviprefactored.utilities.network.NetworkUtls;
 import com.dogvip.giannis.dogviprefactored.utilities.network.RetryWithDelay;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
 import java.util.InvalidPropertiesFormatException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -25,6 +31,7 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.processors.AsyncProcessor;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
@@ -53,6 +60,8 @@ public class SignInViewModel implements LoginContract.SignInViewModel {
     NetworkUtls networkUtls;
     @Inject
     RetryWithDelay retryWithDelay;
+//    @Inject
+//    DogVipRoomDatabase dogVipRoomDatabase;
 
     @Inject
     public SignInViewModel(LoginRequestManager loginRequestManager) {
@@ -160,11 +169,34 @@ public class SignInViewModel implements LoginContract.SignInViewModel {
     }
 
     private Flowable<Response> getSignInEmailFlowableRequest(SignInEmailRequest request) {
-        return mLoginRequestManager.signInEmail(request, this);
+        return mLoginRequestManager
+                            .signInEmail(request, this);
+//                            .doAfterNext(response -> {
+//                                if (response.getCode() == AppConfig.STATUS_OK) {
+//                                    dogVipRoomDatabase.userRoleDao().insertUserRole(response.getLogin().getUserRoles());
+////                                    Log.e(debugTag, dogVipRoomDatabase.userRoleDao().getUserRoles().subscribe(new Consumer<List<UserRole>>() {
+////                                        @Override
+////                                        public void accept(List<UserRole> userRoles) throws Exception {
+////                                            for (UserRole userRole: response.getLogin().getUserRoles()) {
+////                                                Log.e(debugTag, "ID: "+userRole.getId() +" name: "+ userRole.getName());
+////                                            }
+////                                        }
+////                                    }) + " aaa");
+////
+//                                }
+//                            });
     }
 
     private Flowable<Response> getSignInFbGoogleRequest(SignInUpFbGoogleRequest request) {
-        return mLoginRequestManager.signInFbGoogle(request, this);
+        return mLoginRequestManager
+                            .signInFbGoogle(request, this);
+//                            .subscribeOn(Schedulers.io());
+//                            .doAfterNext(response -> {
+//                                if (response.getCode() == AppConfig.STATUS_OK) {
+//                                    dogVipRoomDatabase.userRoleDao().insertUserRole(response.getLogin().getUserRoles());
+////                                    Log.e(debugTag, dogVipRoomDatabase.userRoleDao().getUserRoles() + " aaa");
+//                                }
+//                            });
     }
 
     private RetryWithDelay configureRetryWithDelayParams(int maxRetries, int retryDelayMillis) {
@@ -174,13 +206,19 @@ public class SignInViewModel implements LoginContract.SignInViewModel {
     }
 
     private void handleError(Throwable throwable) {
-        if (throwable instanceof IllegalStateException) { //server error
-            mViewCallback.onError(R.string.error);
-        } else if (throwable instanceof InvalidPropertiesFormatException) {
-//            mViewCallback.onError(R.string.please_fill_out_search_filters);
-        } else {//no network connection error
+        //no network connection error
+        if (throwable instanceof NetworkErrorException) {
             mViewCallback.onError(R.string.no_internet_connection);
+        } else {
+            mViewCallback.onError(R.string.error);
         }
+//        if (throwable instanceof IllegalStateException) { //server error
+//
+//        } else if (throwable instanceof InvalidPropertiesFormatException) {
+////            mViewCallback.onError(R.string.please_fill_out_search_filters);
+//        } else {
+//
+//        }
     }
 
     @Override

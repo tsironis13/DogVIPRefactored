@@ -29,309 +29,309 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/cntLayt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp">
-
-                <com.rey.material.widget.LinearLayout
-                    android:id="@+id/petsLlt"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_marginEnd="1dp"
-                    android:background="@android:color/white"
-                    android:clickable="true"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:orientation="vertical"
-                    style="@style/TouchRipplePrimaryStyle"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/guidelinehor1"
-                    app:layout_constraintRight_toLeftOf="@+id/guidelinevert">
-
-                    <ImageView
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
-                        android:layout_marginBottom="10dp"
-                        android:contentDescription="@string/image_cont_desc"
-                        android:src="@drawable/pets_dashboard" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/my_pets"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                </com.rey.material.widget.LinearLayout>
-
-                <com.rey.material.widget.LinearLayout
-                    android:id="@+id/sittersLlt"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:orientation="vertical"
-                    android:background="@android:color/white"
-                    android:clickable="true"
-                    style="@style/TouchRipplePrimaryStyle"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/guidelinehor1"
-                    app:layout_constraintLeft_toRightOf="@+id/guidelinevert">
-
-                    <ImageView
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
-                        android:layout_marginBottom="10dp"
-                        android:contentDescription="@string/image_cont_desc"
-                        android:src="@drawable/sitters_dashboard" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:text="@string/sitters" />
-
-                </com.rey.material.widget.LinearLayout>
-
-                <com.rey.material.widget.LinearLayout
-                    android:id="@+id/loveLlt"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_marginEnd="1dp"
-                    android:layout_marginTop="1dp"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:background="@android:color/white"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    style="@style/TouchRipplePrimaryStyle"
-                    app:layout_constraintTop_toBottomOf="@+id/guidelinehor1"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/guidelinehor2"
-                    app:layout_constraintRight_toLeftOf="@+id/guidelinevert">
-
-                    <ImageView
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
-                        android:layout_marginBottom="10dp"
-                        android:contentDescription="@string/image_cont_desc"
-                        android:src="@drawable/love_dashboard" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:text="@string/love_match" />
-
-                </com.rey.material.widget.LinearLayout>
-
-                <com.rey.material.widget.LinearLayout
-                    android:id="@+id/profsLlt"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:layout_marginTop="1dp"
-                    android:orientation="vertical"
-                    android:background="@android:color/white"
-                    android:clickable="true"
-                    style="@style/TouchRipplePrimaryStyle"
-                    app:layout_constraintTop_toBottomOf="@+id/guidelinehor1"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/guidelinehor2"
-                    app:layout_constraintLeft_toRightOf="@+id/guidelinevert">
-
-                    <ImageView
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
-                        android:layout_marginBottom="10dp"
-                        android:contentDescription="@string/image_cont_desc"
-                        android:src="@drawable/profs_dashboard" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:text="@string/profs" />
-
-                </com.rey.material.widget.LinearLayout>
-
-                <com.rey.material.widget.LinearLayout
-                    android:id="@+id/lostLlt"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:background="@android:color/white"
-                    android:orientation="vertical"
-                    android:layout_marginRight="1dp"
-                    android:layout_marginEnd="1dp"
-                    android:layout_marginTop="1dp"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:clickable="true"
-                    style="@style/TouchRipplePrimaryStyle"
-                    app:layout_constraintTop_toBottomOf="@+id/guidelinehor2"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/guidelinehor3"
-                    app:layout_constraintRight_toLeftOf="@+id/guidelinevert">
-
-                    <ImageView
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
-                        android:layout_marginBottom="10dp"
-                        android:contentDescription="@string/image_cont_desc"
-                        android:src="@drawable/lost_dashboard" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:text="@string/sos" />
-
-                </com.rey.material.widget.LinearLayout>
-
-                <com.rey.material.widget.LinearLayout
-                    android:id="@+id/vetLlt"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:background="@android:color/white"
-                    android:layout_marginTop="1dp"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    style="@style/TouchRipplePrimaryStyle"
-                    app:layout_constraintTop_toBottomOf="@+id/guidelinehor2"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/guidelinehor3"
-                    app:layout_constraintLeft_toRightOf="@+id/guidelinevert">
-
-                    <ImageView
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
-                        android:layout_marginBottom="10dp"
-                        android:contentDescription="@string/image_cont_desc"
-                        android:src="@drawable/vet_dashboard_disable" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorPrimaryOpaque"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:text="@string/vets" />
-
-                </com.rey.material.widget.LinearLayout>
-
-                <com.rey.material.widget.LinearLayout
-                    android:id="@+id/offersLlt"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_marginEnd="1dp"
-                    android:layout_marginTop="1dp"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:background="@android:color/white"
-                    android:clickable="true"
-                    style="@style/TouchRipplePrimaryStyle"
-                    app:layout_constraintTop_toBottomOf="@+id/guidelinehor3"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/guidelinevert">
-
-                    <ImageView
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
-                        android:layout_marginBottom="10dp"
-                        android:contentDescription="@string/image_cont_desc"
-                        android:src="@drawable/offers_dashboard_disable" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorPrimaryOpaque"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:text="@string/offers" />
-
-                </com.rey.material.widget.LinearLayout>
-
-                <com.rey.material.widget.LinearLayout
-                    android:id="@+id/moreLlt"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:orientation="vertical"
-                    android:layout_marginTop="1dp"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:background="@android:color/white"
-                    android:clickable="true"
-                    style="@style/TouchRipplePrimaryStyle"
-                    app:layout_constraintTop_toBottomOf="@+id/guidelinehor3"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/guidelinevert">
-
-                    <ImageView
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
-                        android:layout_marginBottom="10dp"
-                        android:contentDescription="@string/image_cont_desc"
-                        android:src="@drawable/more_dashboard_disable" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorPrimaryOpaque"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:text="@string/more" />
-
-                </com.rey.material.widget.LinearLayout>
-
-                <android.support.constraint.Guideline
-                    android:id="@+id/guidelinehor1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="170dp" />
-
-                <android.support.constraint.Guideline
-                    android:id="@+id/guidelinehor2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="340dp" />
-
-                <android.support.constraint.Guideline
-                    android:id="@+id/guidelinehor3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="510dp" />
-
-                <android.support.constraint.Guideline
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="680dp" />
-
-                <android.support.constraint.Guideline
-                    android:id="@+id/guidelinevert"
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/cntLayt"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.50" />
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp">
 
-            </android.support.constraint.ConstraintLayout>
+                    <com.rey.material.widget.LinearLayout
+                        android:id="@+id/petsLlt"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_marginEnd="1dp"
+                        android:background="@android:color/white"
+                        android:clickable="true"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:orientation="vertical"
+                        style="@style/TouchRipplePrimaryStyle"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/guidelinehor1"
+                        app:layout_constraintRight_toLeftOf="@+id/guidelinevert">
+
+                        <ImageView
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_marginBottom="10dp"
+                            android:contentDescription="@string/image_cont_desc"
+                            android:src="@drawable/pets_dashboard" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/my_pets"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                    </com.rey.material.widget.LinearLayout>
+
+                    <com.rey.material.widget.LinearLayout
+                        android:id="@+id/sittersLlt"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:orientation="vertical"
+                        android:background="@android:color/white"
+                        android:clickable="true"
+                        style="@style/TouchRipplePrimaryStyle"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/guidelinehor1"
+                        app:layout_constraintLeft_toRightOf="@+id/guidelinevert">
+
+                        <ImageView
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_marginBottom="10dp"
+                            android:contentDescription="@string/image_cont_desc"
+                            android:src="@drawable/sitters_dashboard" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:text="@string/sitters" />
+
+                    </com.rey.material.widget.LinearLayout>
+
+                    <com.rey.material.widget.LinearLayout
+                        android:id="@+id/loveLlt"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_marginTop="1dp"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:background="@android:color/white"
+                        android:orientation="vertical"
+                        android:clickable="true"
+                        style="@style/TouchRipplePrimaryStyle"
+                        app:layout_constraintTop_toBottomOf="@+id/guidelinehor1"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/guidelinehor2"
+                        app:layout_constraintRight_toLeftOf="@+id/guidelinevert">
+
+                        <ImageView
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_marginBottom="10dp"
+                            android:contentDescription="@string/image_cont_desc"
+                            android:src="@drawable/love_dashboard" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:text="@string/love_match" />
+
+                    </com.rey.material.widget.LinearLayout>
+
+                    <com.rey.material.widget.LinearLayout
+                        android:id="@+id/profsLlt"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:layout_marginTop="1dp"
+                        android:orientation="vertical"
+                        android:background="@android:color/white"
+                        android:clickable="true"
+                        style="@style/TouchRipplePrimaryStyle"
+                        app:layout_constraintTop_toBottomOf="@+id/guidelinehor1"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/guidelinehor2"
+                        app:layout_constraintLeft_toRightOf="@+id/guidelinevert">
+
+                        <ImageView
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_marginBottom="10dp"
+                            android:contentDescription="@string/image_cont_desc"
+                            android:src="@drawable/profs_dashboard" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:text="@string/profs" />
+
+                    </com.rey.material.widget.LinearLayout>
+
+                    <com.rey.material.widget.LinearLayout
+                        android:id="@+id/lostLlt"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@android:color/white"
+                        android:orientation="vertical"
+                        android:layout_marginRight="1dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_marginTop="1dp"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:clickable="true"
+                        style="@style/TouchRipplePrimaryStyle"
+                        app:layout_constraintTop_toBottomOf="@+id/guidelinehor2"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/guidelinehor3"
+                        app:layout_constraintRight_toLeftOf="@+id/guidelinevert">
+
+                        <ImageView
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_marginBottom="10dp"
+                            android:contentDescription="@string/image_cont_desc"
+                            android:src="@drawable/lost_dashboard" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:text="@string/sos" />
+
+                    </com.rey.material.widget.LinearLayout>
+
+                    <com.rey.material.widget.LinearLayout
+                        android:id="@+id/vetLlt"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@android:color/white"
+                        android:layout_marginTop="1dp"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:orientation="vertical"
+                        android:clickable="true"
+                        style="@style/TouchRipplePrimaryStyle"
+                        app:layout_constraintTop_toBottomOf="@+id/guidelinehor2"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/guidelinehor3"
+                        app:layout_constraintLeft_toRightOf="@+id/guidelinevert">
+
+                        <ImageView
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_marginBottom="10dp"
+                            android:contentDescription="@string/image_cont_desc"
+                            android:src="@drawable/vet_dashboard_disable" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorPrimaryOpaque"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:text="@string/vets" />
+
+                    </com.rey.material.widget.LinearLayout>
+
+                    <com.rey.material.widget.LinearLayout
+                        android:id="@+id/offersLlt"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_marginTop="1dp"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:background="@android:color/white"
+                        android:clickable="true"
+                        style="@style/TouchRipplePrimaryStyle"
+                        app:layout_constraintTop_toBottomOf="@+id/guidelinehor3"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/guidelinevert">
+
+                        <ImageView
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_marginBottom="10dp"
+                            android:contentDescription="@string/image_cont_desc"
+                            android:src="@drawable/offers_dashboard_disable" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorPrimaryOpaque"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:text="@string/offers" />
+
+                    </com.rey.material.widget.LinearLayout>
+
+                    <com.rey.material.widget.LinearLayout
+                        android:id="@+id/moreLlt"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:orientation="vertical"
+                        android:layout_marginTop="1dp"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:background="@android:color/white"
+                        android:clickable="true"
+                        style="@style/TouchRipplePrimaryStyle"
+                        app:layout_constraintTop_toBottomOf="@+id/guidelinehor3"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@+id/guidelinevert">
+
+                        <ImageView
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_marginBottom="10dp"
+                            android:contentDescription="@string/image_cont_desc"
+                            android:src="@drawable/more_dashboard_disable" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorPrimaryOpaque"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:text="@string/more" />
+
+                    </com.rey.material.widget.LinearLayout>
+
+                    <android.support.constraint.Guideline
+                        android:id="@+id/guidelinehor1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_begin="170dp" />
+
+                    <android.support.constraint.Guideline
+                        android:id="@+id/guidelinehor2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_begin="340dp" />
+
+                    <android.support.constraint.Guideline
+                        android:id="@+id/guidelinehor3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_begin="510dp" />
+
+                    <android.support.constraint.Guideline
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_begin="680dp" />
+
+                    <android.support.constraint.Guideline
+                        android:id="@+id/guidelinevert"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.50" />
+
+                </android.support.constraint.ConstraintLayout>
 
             </ScrollView>
 

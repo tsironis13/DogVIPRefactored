@@ -1,6 +1,8 @@
 package com.dogvip.giannis.dogviprefactored.retrofit;
 
+import com.dogvip.giannis.dogviprefactored.pojo.BaseRequest;
 import com.dogvip.giannis.dogviprefactored.pojo.Response;
+import com.dogvip.giannis.dogviprefactored.pojo.sync.UploadFcmTokenRequest;
 import com.dogvip.giannis.dogviprefactored.pojo.login.SignInEmailRequest;
 import com.dogvip.giannis.dogviprefactored.pojo.login.SignInUpFbGoogleRequest;
 import com.dogvip.giannis.dogviprefactored.pojo.login.forgotpass.ForgotPassRequest;
@@ -28,5 +30,11 @@ public interface ServiceAPI {
 
     @POST("actions.php")
     Flowable<Response> forgotPass(@Body ForgotPassRequest request);
+
+    @POST("actions.php")
+    Flowable<Response> uploadFcmToken(@Body UploadFcmTokenRequest request);
+
+    @POST("actions.php")
+    Flowable<Response> syncUserRolesAndPets(@Body BaseRequest request);
 
 }

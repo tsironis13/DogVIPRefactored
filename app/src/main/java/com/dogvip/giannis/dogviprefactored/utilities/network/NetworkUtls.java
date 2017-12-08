@@ -1,5 +1,6 @@
 package com.dogvip.giannis.dogviprefactored.utilities.network;
 
+import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.net.ConnectivityManager;
 
@@ -26,7 +27,7 @@ public class NetworkUtls {
             if (isNetworkAvailable()) {
                 e.onNext(true);
             } else {
-                e.onError(new Throwable());
+                e.onError(new NetworkErrorException());
             }
         }, BackpressureStrategy.LATEST);
     }

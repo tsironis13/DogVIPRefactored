@@ -41,11 +41,11 @@ public class SignUpEmailRequest extends BaseRequest {
 
     public String getConfpassword() { return confpassword; }
 
-    public void setConfpassword(String confpassword) { this.confpassword = confpassword; }
+    public void setConfpassword(String confPassword) { this.confpassword = confPassword; }
 
     public String getDeviceid() { return deviceid; }
 
-    public void setDeviceid(String deviceid) { this.deviceid = deviceid; }
+    public void setDeviceid(String deviceId) { this.deviceid = deviceId; }
 
     public int getRegtype() { return regtype; }
 

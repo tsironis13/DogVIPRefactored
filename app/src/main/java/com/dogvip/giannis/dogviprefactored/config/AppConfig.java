@@ -16,8 +16,13 @@ public class AppConfig {
     public static final int PUBLISH_SUBJ = 0;
     //APPLICATION EVENTS
     public static final int FRAGMENT_ANIMATION = 1000;
+    public static final int TOKEN_IS_READY = 1030;
     //back button pressed
     public static final int KEYCODE_BACK = 4;
+    //JOB PRIORITY
+    public static final int JOB_PRIORITY_LOW = 0;
+    public static final int JOB_PRIORITY_MID = 500;
+    public static final int JOB_PRIORITY_HIGH = 1000;
     //REQUEST STATE
     public static final int REQUEST_NONE = 0;
     public static final int REQUEST_RUNNING = 10;
