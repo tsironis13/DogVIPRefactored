@@ -18,13 +18,16 @@ import io.reactivex.Single;
 public interface StateEntityDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertData(StateEntity obj);
+    void insertData(List<StateEntity> obj);
 
-    @Query("UPDATE StateEntity SET updated_at = :updated_at WHERE id = :id")
-    int updateUserStateEntity(long updated_at, int id);
+    @Query("UPDATE StateEntity SET updated_at = :updated_at WHERE id IN (:ids)")
+    void updateUserStateEntity(long updated_at, int[] ids);
 
-    @Query("DELETE FROM StateEntity WHERE id = :id")
-    void deleteUserState(int id);
+    @Query("DELETE FROM StateEntity WHERE id IN (:ids)")
+    void deleteUserState(int[] ids);
+
+    @Query("SELECT * FROM StateEntity WHERE id = 1")
+    Single<StateEntity> getOwnerState();
 
     @Query("SELECT * FROM StateEntity")
     Single<List<StateEntity>> get();

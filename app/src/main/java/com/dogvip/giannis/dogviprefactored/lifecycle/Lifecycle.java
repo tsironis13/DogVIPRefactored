@@ -19,4 +19,10 @@ public interface Lifecycle {
         void onNegativeAction();
     }
 
+    interface MyDateDialogCallbackContract {
+        void onDisplayDateSet(String displayDate);
+        void onDateSet(long date);
+        void onInvalidDateSet();
+    }
+
 }

@@ -17,9 +17,4 @@ public class DashboardRequestManager {
         this.mDashboardAPIService = dashboardAPIService;
     }
 
-//    public Flowable<Response> uploadFcmToken(UploadFcmTokenRequest request, DashboardViewModel viewModel) {
-//        //in case server response is faster than activity lifecycle callback methods
-//        return mDashboardAPIService.uploadFcmToken(request, viewModel);
-//    }
-
 }

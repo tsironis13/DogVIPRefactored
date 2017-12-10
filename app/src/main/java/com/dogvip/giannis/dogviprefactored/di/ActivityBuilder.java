@@ -8,6 +8,7 @@ import com.dogvip.giannis.dogviprefactored.di.scope.PerActivity;
 import com.dogvip.giannis.dogviprefactored.login.LoginActivity;
 import com.dogvip.giannis.dogviprefactored.login.LoginActivityModule;
 import com.dogvip.giannis.dogviprefactored.owner.form.OwnerFormActivity;
+import com.dogvip.giannis.dogviprefactored.owner.form.OwnerFormActivityModule;
 import com.dogvip.giannis.dogviprefactored.owner.profile.OwnerProfileActivity;
 import com.dogvip.giannis.dogviprefactored.utilities.notification.NotificationUtlsModule;
 
@@ -29,7 +30,7 @@ abstract class ActivityBuilder {
     abstract DashboardActivity bindDashboardActivity();
 
     @PerActivity
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = {OwnerFormActivityModule.class, AccountManagerModule.class})
     abstract OwnerFormActivity bindOwnerFormActivity();
 
     @PerActivity

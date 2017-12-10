@@ -1,6 +1,7 @@
 package com.dogvip.giannis.dogviprefactored.room_persistence_data.entities;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import javax.inject.Inject;
@@ -12,8 +13,10 @@ import javax.inject.Inject;
 public class StateEntity {
     /*
      * id references set of data that are't updated for 45 minutes
-     * 1-> user roles data, user pet data
-     * 2-> all pet data, excluding user pets
+     * 1-> owner role data, user pet data
+     * 2-> pet sitter data
+     * 3-> prof data
+     * 4-> all pet data, excluding owner pets
      */
     @PrimaryKey
     private int id;

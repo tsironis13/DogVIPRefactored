@@ -18,7 +18,10 @@
     <string name="retained_signup_fgmt">retained_signup_fgmt</string>
     <string name="retained_forgotpass_fgmt">retained_forgotpass_fgmt</string>
     <string name="retained_dashboard_act">retained_dashboard_act</string>
+    <string name="retained_owner_form_act">retained_owner_form_act</string>
+    <string name="retained_image_upload_fgmt">retained_image_upload_fgmt</string>
     <string name="alert_dialog_fgmt">alert_dialog_fgmt</string>
+    <string name="date_dialog_fgmt">date_dialog_fgmt</string>
 
     <string name="facebook_regstr_label">Εγγραφη μεσω facebook</string>
     <string name="google_regstr_label">Εγγραφη μεσω google</string>

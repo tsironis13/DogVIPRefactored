@@ -2,14 +2,20 @@ package com.dogvip.giannis.dogviprefactored.room_persistence_data.entities;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+
+import com.dogvip.giannis.dogviprefactored.BR;
 
 import org.json.JSONArray;
+
+import javax.inject.Inject;
 
 /**
  * Created by giannis on 4/12/2017.
  */
 @Entity
-public class UserRole {
+public class UserRole extends BaseObservable {
 
     @PrimaryKey
     private int id;
@@ -18,7 +24,7 @@ public class UserRole {
     private String name;
     private String surname;
     private String city;
-    private long age;
+    private String age;
     private String mobile_number;
     private String image_url;
     private int pet_size;
@@ -28,6 +34,9 @@ public class UserRole {
     private String place_address;
     private String place_image_urls;
     private String website;
+
+    @Inject
+    public UserRole() {}
 
     public int getId() { return id; }
 
@@ -41,9 +50,13 @@ public class UserRole {
 
     public void setRole(int role) { this.role = role; }
 
+//    @Bindable
     public String getName() { return name; }
 
-    public void setName(String name) { this.name = name; }
+    public void setName(String name) {
+        this.name = name;
+//        notifyPropertyChanged(BR.name);
+    }
 
     public String getSurname() { return surname; }
 
@@ -53,9 +66,9 @@ public class UserRole {
 
     public void setCity(String city) { this.city = city; }
 
-    public long getAge() { return age; }
+    public String getAge() { return age; }
 
-    public void setAge(long age) { this.age = age; }
+    public void setAge(String age) { this.age = age; }
 
     public String getMobile_number() { return mobile_number; }
 

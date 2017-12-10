@@ -63,28 +63,19 @@ public class SyncLocalUserRolesAndPetsJob extends JobService {
                                 .subscribe(() -> {
                                             Log.e(debugTag, "SyncLocalUserRolesAndPetsJob successfully finished");
                                             jobFinished(job, false);
-                                            dogVipRoomDatabase.stateEntityDao().get().subscribe(new Consumer<List<StateEntity>>() {
-                                                @Override
-                                                public void accept(List<StateEntity> stateEntities) throws Exception {
-                                                    for (StateEntity stateEntity: stateEntities) {
-                                                        Log.e(debugTag, "ID: "+stateEntity.getId() + " NAME: "+stateEntity.getUpdated_at());
-                                                    }
+                                            dogVipRoomDatabase.stateEntityDao().get().subscribe(stateEntities -> {
+                                                for (StateEntity stateEntity: stateEntities) {
+                                                    Log.e(debugTag, "ID: "+stateEntity.getId() + " UPDATE: "+stateEntity.getUpdated_at());
                                                 }
                                             });
-                                            dogVipRoomDatabase.userRoleDao().getUserRoles().subscribe(new Consumer<List<UserRole>>() {
-                                                @Override
-                                                public void accept(List<UserRole> userRoles) throws Exception {
-                                                    for (UserRole userRole: userRoles) {
-                                                        Log.e(debugTag, "ID: "+userRole.getId() + " NAME: "+userRole.getName() +  " SURNAME: "+userRole.getSurname());
-                                                    }
+                                            dogVipRoomDatabase.userRoleDao().getUserRoles().subscribe(userRoles -> {
+                                                for (UserRole userRole: userRoles) {
+                                                    Log.e(debugTag, "ID: "+userRole.getId() + " NAME: "+userRole.getName() +  " SURNAME: "+userRole.getSurname());
                                                 }
                                             });
-                                            dogVipRoomDatabase.petDao().getAllPets().subscribe(new Consumer<List<Pet>>() {
-                                                @Override
-                                                public void accept(List<Pet> pets) throws Exception {
-                                                    for (Pet pet: pets) {
-                                                        Log.e(debugTag, "ID: "+pet.getP_id() + " NAME: "+pet.getP_name() +  " race: "+pet.getRace());
-                                                    }
+                                            dogVipRoomDatabase.petDao().getAllPets().subscribe(pets -> {
+                                                for (Pet pet: pets) {
+                                                    Log.e(debugTag, "ID: "+pet.getP_id() + " NAME: "+pet.getP_name() +  " race: "+pet.getRace());
                                                 }
                                             });
                                         },
@@ -113,7 +104,7 @@ public class SyncLocalUserRolesAndPetsJob extends JobService {
 
     private Completable syncLocalUserRolesAndPets(SyncUserRolesAndPetsResponse userRolesAndPets) {
         return Completable.fromAction(() -> {
-                dogVipRoomDatabase.stateEntityDao().updateUserStateEntity(System.currentTimeMillis()/1000, 1);
+                dogVipRoomDatabase.stateEntityDao().updateUserStateEntity(System.currentTimeMillis()/1000L, new int[]{1,2,3});
                 dogVipRoomDatabase.userRoleDao().deleteUserRoleData();
                 if (!userRolesAndPets.getUserRoles().isEmpty()) {
                     List<Long> rows = dogVipRoomDatabase

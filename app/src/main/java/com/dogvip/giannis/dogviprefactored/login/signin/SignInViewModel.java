@@ -60,8 +60,6 @@ public class SignInViewModel implements LoginContract.SignInViewModel {
     NetworkUtls networkUtls;
     @Inject
     RetryWithDelay retryWithDelay;
-//    @Inject
-//    DogVipRoomDatabase dogVipRoomDatabase;
 
     @Inject
     public SignInViewModel(LoginRequestManager loginRequestManager) {
@@ -169,34 +167,11 @@ public class SignInViewModel implements LoginContract.SignInViewModel {
     }
 
     private Flowable<Response> getSignInEmailFlowableRequest(SignInEmailRequest request) {
-        return mLoginRequestManager
-                            .signInEmail(request, this);
-//                            .doAfterNext(response -> {
-//                                if (response.getCode() == AppConfig.STATUS_OK) {
-//                                    dogVipRoomDatabase.userRoleDao().insertUserRole(response.getLogin().getUserRoles());
-////                                    Log.e(debugTag, dogVipRoomDatabase.userRoleDao().getUserRoles().subscribe(new Consumer<List<UserRole>>() {
-////                                        @Override
-////                                        public void accept(List<UserRole> userRoles) throws Exception {
-////                                            for (UserRole userRole: response.getLogin().getUserRoles()) {
-////                                                Log.e(debugTag, "ID: "+userRole.getId() +" name: "+ userRole.getName());
-////                                            }
-////                                        }
-////                                    }) + " aaa");
-////
-//                                }
-//                            });
+        return mLoginRequestManager.signInEmail(request, this);
     }
 
     private Flowable<Response> getSignInFbGoogleRequest(SignInUpFbGoogleRequest request) {
-        return mLoginRequestManager
-                            .signInFbGoogle(request, this);
-//                            .subscribeOn(Schedulers.io());
-//                            .doAfterNext(response -> {
-//                                if (response.getCode() == AppConfig.STATUS_OK) {
-//                                    dogVipRoomDatabase.userRoleDao().insertUserRole(response.getLogin().getUserRoles());
-////                                    Log.e(debugTag, dogVipRoomDatabase.userRoleDao().getUserRoles() + " aaa");
-//                                }
-//                            });
+        return mLoginRequestManager.signInFbGoogle(request, this);
     }
 
     private RetryWithDelay configureRetryWithDelayParams(int maxRetries, int retryDelayMillis) {

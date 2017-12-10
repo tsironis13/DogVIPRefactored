@@ -151,7 +151,7 @@ public class DashboardViewModel implements DashboardContract.ViewModel {
 
     private Completable clearLocalUserData() {
         return Completable.fromAction(() -> {
-                        dogVipRoomDatabase.stateEntityDao().deleteUserState(1);
+                        dogVipRoomDatabase.stateEntityDao().deleteUserState(new int[]{1,2,3});
                         dogVipRoomDatabase.userRoleDao().deleteUserRoleData();
 //            Log.e(debugTag, x + " longggggg");
         });

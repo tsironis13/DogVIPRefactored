@@ -20,6 +20,7 @@ import com.dogvip.giannis.dogviprefactored.room_persistence_data.entities.UserRo
 import com.dogvip.giannis.dogviprefactored.services.JobConfiguration;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -39,8 +40,8 @@ public class LoginRequestManager {
     DogVipRoomDatabase dogVipRoomDatabase;
     @Inject
     JobConfiguration mJobConfiguration;
-    @Inject
-    StateEntity stateEntity;
+//    @Inject
+//    StateEntity stateEntity;
 
     @Inject
     public LoginRequestManager(LoginAPIService loginAPIService) {
@@ -81,11 +82,11 @@ public class LoginRequestManager {
 
     private void insertUserRolesPets(Response response) {
         if (response.getCode() == AppConfig.STATUS_OK) {
-            stateEntity.setId(1);
-            stateEntity.setUpdated_at(System.currentTimeMillis()/1000);
-            dogVipRoomDatabase.stateEntityDao().insertData(stateEntity);
+//            stateEntity.setId(1);
+//            stateEntity.setUpdated_at(System.currentTimeMillis()/1000);
+            dogVipRoomDatabase.stateEntityDao().insertData(userRolesEntities());
             mJobConfiguration.syncLocalUserRolesAndPets(response.getLogin().getAuthtoken());
-            Log.e(debugTag, "execute commnad to start job: "+ System.currentTimeMillis()/1000);
+            Log.e(debugTag, "execute commnad to start job: "+ System.currentTimeMillis()/1000L);
             if (!response.getLogin().getUserRoles().isEmpty()) {
                 List<Long> rows = dogVipRoomDatabase
                                                 .userRoleDao()
@@ -97,15 +98,23 @@ public class LoginRequestManager {
                 }
             }
 //                Log.e(debugTag, petrows + " PET ROWS");
-//                dogVipRoomDatabase.dataStateDao().get().subscribe(new Consumer<List<StateEntity>>() {
-//                    @Override
-//                    public void accept(List<StateEntity> stateEntities) throws Exception {
-//                        for (StateEntity stateEntity: stateEntities) {
-//                            Log.e(debugTag, "ID: "+stateEntity.getId() + " NAME: "+stateEntity.getUpdated_at());
-//                        }
+//                dogVipRoomDatabase.stateEntityDao().get().subscribe(stateEntities -> {
+//                    for (StateEntity stateEntity: stateEntities) {
+//                        Log.e(debugTag, "ID: "+stateEntity.getId() + " UPDATE TIME: "+stateEntity.getUpdated_at());
 //                    }
 //                });
         }
+    }
+
+    private List<StateEntity> userRolesEntities() {
+        List<StateEntity> entities = new ArrayList<>();
+        for (int i = 1; i <= 3; i++) {
+            StateEntity stateEntity = new StateEntity();
+            stateEntity.setId(i);
+            stateEntity.setUpdated_at(System.currentTimeMillis()/1000L);
+            entities.add(stateEntity);
+        }
+        return entities;
     }
 
 }
