@@ -1,7 +1,9 @@
-package com.dogvip.giannis.dogviprefactored.room_persistence_data.entities;
+package com.dogvip.giannis.dogviprefactored.roompersistencedata.entities;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
@@ -13,7 +15,7 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
  * Created by giannis on 7/12/2017.
  */
 @Entity(foreignKeys = @ForeignKey(entity = UserRole.class,
-                                  parentColumns = "id",
+                                  parentColumns = "_id",
                                   childColumns = "user_role_id",
                                   onDelete = CASCADE),
         indices = @Index(value="user_role_id"))
@@ -23,6 +25,7 @@ public class Pet {
     public Pet() {}
 
     @PrimaryKey
+    @ColumnInfo(name = "_id")
     private int p_id;
     private int user_role_id;
     private String p_name;
@@ -36,6 +39,7 @@ public class Pet {
     private String chtr;
     private String image_urls;
     private String main_image;
+    @Ignore
     private long date_created;
     private int half_blood;
     private int total_likes;

@@ -27,7 +27,7 @@ public class SignUpEmailCommand implements Command {
 
     @Override
     public void executeOnSuccess(Response response) {
-        mViewCallback.onSuccessEmailSignUp(response.getLogin());
+        mViewCallback.onSuccessEmailSignUp();
     }
 
     @Override

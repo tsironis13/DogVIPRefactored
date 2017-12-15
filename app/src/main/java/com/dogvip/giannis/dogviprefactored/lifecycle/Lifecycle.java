@@ -14,11 +14,6 @@ public interface Lifecycle {
         void onViewDetached();
     }
 
-    interface MyAlertDialogCallbackContract {
-        void onPositiveAction();
-        void onNegativeAction();
-    }
-
     interface MyDateDialogCallbackContract {
         void onDisplayDateSet(String displayDate);
         void onDateSet(long date);

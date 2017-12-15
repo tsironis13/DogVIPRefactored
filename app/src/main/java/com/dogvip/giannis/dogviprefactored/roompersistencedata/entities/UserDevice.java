@@ -1,12 +1,9 @@
-package com.dogvip.giannis.dogviprefactored.room_persistence_data.entities;
+package com.dogvip.giannis.dogviprefactored.roompersistencedata.entities;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import java.io.Serializable;
 
 import javax.inject.Inject;
 
@@ -20,6 +17,7 @@ public class UserDevice {
     public UserDevice() {}
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "_id")
     private int id;
     private int user_id;
     private String device_model;

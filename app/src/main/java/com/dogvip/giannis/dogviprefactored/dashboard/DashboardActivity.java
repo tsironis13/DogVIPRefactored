@@ -1,10 +1,14 @@
 package com.dogvip.giannis.dogviprefactored.dashboard;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 
@@ -23,8 +27,14 @@ import com.dogvip.giannis.dogviprefactored.utilities.ui.MyAlertDialogFragment;
 import com.dogvip.giannis.dogviprefactored.utilities.ui.UIUtls;
 import com.jakewharton.rxbinding2.view.RxView;
 
+import java.io.Serializable;
+
 import javax.inject.Inject;
 
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
@@ -32,11 +42,13 @@ import io.reactivex.functions.Consumer;
  * Created by giannis on 30/11/2017.
  */
 
-public class DashboardActivity extends BaseActivity implements DashboardContract.View, Lifecycle.MyAlertDialogCallbackContract {
+public class DashboardActivity extends BaseActivity implements DashboardContract.View {
 
     private static final String debugTag = DashboardActivity.class.getSimpleName();
     private ActivityDashboardBinding mBinding;
-    private MyAlertDialogFragment myAlertDialogFragment;
+    private boolean ownerDeleted;
+//    @Inject
+//    DispatchingAndroidInjector<Fragment> fragmentInjector;
     @Inject
     MyAccountManager mAccountManager;
     @Inject
@@ -55,20 +67,21 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
         setSupportActionBar(mBinding.incltoolbar.toolbar);
         initializeViewModel();
         setUpNavDrawer(mAccountManager.getAccountDetails().getEmail());
+        if (getIntent().getExtras() != null) {
+            ownerDeleted = getIntent().getExtras().getBoolean(getResources().getString(R.string.owner_deleted));
+//            Log.e(debugTag, ownerDeleted + " ");
+        }
         if (savedInstanceState != null) {
             MyAlertDialogFragment dialogFragment = (MyAlertDialogFragment) getSupportFragmentManager().findFragmentByTag(getResources().getString(R.string.alert_dialog_fgmt));
             if (dialogFragment != null) {
-                myAlertDialogFragment = dialogFragment;
-                dialogFragment.setInvokingActivity(this);
+                mViewModel.pickDialogByType(dialogFragment, getSupportFragmentManager(), getResources().getString(R.string.alert_dialog_fgmt), dialogFragment.getArguments().getString("type"));
             } else {
-                setUpDialogFragment();
+                mViewModel.initializeAlertDialog();
             }
         } else {
-            setUpDialogFragment();
-//            Log.e(debugTag, mAccountManager.getAccountDetails().getUserId() + " id");
+            mViewModel.initializeAlertDialog();
             mViewModel.syncFcmToken(mAccountManager.getAccountDetails());
         }
-//        Log.e(debugTag, dogVipRoomDatabase + " database");
     }
 
     @Override
@@ -85,16 +98,34 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         mDashboardRetainFragment.retainViewModel(mViewModel);
-        if (myAlertDialogFragment != null)myAlertDialogFragment.clearInvokingActivity();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (ownerDeleted) {
+            moveTaskToBack(true);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
     public Lifecycle.ViewModel getViewModel() {
         return mViewModel;
     }
+
+//    @Override
+//    public AndroidInjector<Fragment> supportFragmentInjector() {
+//        return fragmentInjector;
+//    }
 
     @Override
     public void onSuccess() {
@@ -111,6 +142,7 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
         Bundle bundle = new Bundle();
         bundle.putBoolean(getResources().getString(R.string.owner_exists), false);
         startActivity(new Intent(this, OwnerFormActivity.class).putExtras(bundle));
+//        finish();
     }
 
     @Override
@@ -119,7 +151,7 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
     }
 
     @Override
-    public void onPositiveAction() {
+    public void onLogoutAction() {
         mAccountManager.removeAccount().subscribe(
                 accountRemoved -> {
                     mViewModel.logoutUser();
@@ -130,7 +162,7 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
     }
 
     @Override
-    public void onNegativeAction() {
+    public void onLogoutCancelAction() {
         mBinding.drawerLlt.closeDrawers();
     }
 
@@ -148,7 +180,8 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
         mBinding.navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.logout:
-                    myAlertDialogFragment.show(getSupportFragmentManager(), getResources().getString(R.string.alert_dialog_fgmt));
+                    mViewModel.setAlertDialogMsgs(getResources().getString(R.string.logout_dialog_title), "", getResources().getString(R.string.no),getResources().getString(R.string.yes));
+                    mViewModel.showLogoutDialog(getSupportFragmentManager(), getResources().getString(R.string.alert_dialog_fgmt));
                     break;
             }
             return true;
@@ -156,8 +189,8 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
     }
 
     private void setUpDialogFragment() {
-        myAlertDialogFragment = MyAlertDialogFragment.newInstance(getResources().getString(R.string.logout_dialog_title), getResources().getString(R.string.no), getResources().getString(R.string.yes));
-        myAlertDialogFragment.setInvokingActivity(this);
+//        myAlertDialogFragment = MyAlertDialogFragment.newInstance();
+//        myAlertDialogFragment.setInvokingActivity(this);
     }
 
     private void initializeViewModel() {
@@ -168,4 +201,5 @@ public class DashboardActivity extends BaseActivity implements DashboardContract
         }
         if (mDashboardRetainFragment.getViewModel() != null) mViewModel = mDashboardRetainFragment.getViewModel();
     }
+
 }

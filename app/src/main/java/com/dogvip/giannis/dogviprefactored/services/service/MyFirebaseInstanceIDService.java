@@ -4,10 +4,10 @@ import android.arch.persistence.room.EmptyResultSetException;
 import android.util.Log;
 
 import com.dogvip.giannis.dogviprefactored.accountmanager.MyAccountManager;
-import com.dogvip.giannis.dogviprefactored.room_persistence_data.DogVipRoomDatabase;
-import com.dogvip.giannis.dogviprefactored.room_persistence_data.entities.UserDevice;
+import com.dogvip.giannis.dogviprefactored.roompersistencedata.DogVipRoomDatabase;
+import com.dogvip.giannis.dogviprefactored.roompersistencedata.entities.UserDevice;
 import com.dogvip.giannis.dogviprefactored.services.JobConfiguration;
-import com.dogvip.giannis.dogviprefactored.utilities.network.RetryWithDelay;
+import com.dogvip.giannis.dogviprefactored.utilities.errorhandling.RetryWithDelay;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
@@ -15,6 +15,7 @@ import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
 import io.reactivex.Completable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -43,11 +44,17 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
     @Override
     public void onTokenRefresh() {
-        Log.e(debugTag, "onTOkenRefresh: "+FirebaseInstanceId.getInstance().getToken() + "\n"+ dogVipRoomDatabase);
+        Log.e(debugTag, "onTOkenRefresh: "+FirebaseInstanceId.getInstance().getToken());
         dogVipRoomDatabase
                 .userDeviceDao()
                 .getDeviceDetails(android.os.Build.SERIAL)
-                .subscribeOn(Schedulers.io())
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Log.e(debugTag, throwable +  " ON TOKEN REFRESH THROWABLE");
+                    }
+                })
+//                .subscribeOn(Schedulers.io())
                 .retryWhen(configureRetryWithDelayParams(3, 2000))
                 .subscribe(userDevice -> {
                     Log.e(debugTag, "token is not synced and user exist");
@@ -73,7 +80,10 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
                                 .subscribe(
                                         () -> Log.e(debugTag, "insert success: "),
                                         onError -> Log.e(debugTag, "Unable to insert ...", onError));
+                    } else {
+                        Log.e(debugTag, " SKAEUUUUUUUUUUUUUUUUUUUU: "+throwable);
                     }
+
                 });
     }
 

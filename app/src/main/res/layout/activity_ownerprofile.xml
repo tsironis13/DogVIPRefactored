@@ -6,13 +6,9 @@
     <data>
         <import type="android.view.View" />
 
-        <!--<variable-->
-            <!--name="owner"-->
-            <!--type="com.tsiro.dogvip.POJO.mypets.owner.OwnerObj" />-->
-
         <variable
-            name="haspets"
-            type="boolean" />
+            name="viewmodel"
+            type="com.dogvip.giannis.dogviprefactored.owner.profile.OwnerProfileViewModel" />
 
     </data>
 
@@ -22,12 +18,23 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/loadingInd"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:visibility="@{!viewmodel.processing ? View.GONE : View.VISIBLE}"
+            style="@style/AVLoadingIndicatorView"
+            app:indicatorName="BallPulseIndicator"
+            app:indicatorColor="@color/colorPrimary" />
+
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbatLlt"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:fitsSystemWindows="true"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:visibility="@{viewmodel.viewVisible ? View.VISIBLE : View.GONE}">
 
             <android.support.design.widget.CollapsingToolbarLayout
                 android:id="@+id/colTlbrLyt"
@@ -35,16 +42,12 @@
                 android:layout_height="212dp"
                 android:fitsSystemWindows="true"
                 app:contentScrim="@color/colorAccent"
-                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
-
-                <!--<include-->
-                <!--android:id="@+id/incltoolbar"-->
-                <!--layout="@layout/toolbar" />-->
+                app:layout_scrollFlags="scroll|enterAlways">
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/logo"
+                    android:src="@drawable/profile_banner"
                     android:scaleType="centerCrop"
                     android:fitsSystemWindows="true"
                     android:contentDescription="@string/image_cont_desc"
@@ -69,7 +72,7 @@
                         android:layout_marginRight="12dp"
                         android:layout_marginEnd="12dp"
                         android:padding="1dp"
-                        android:src="@drawable/logo"
+                        android:src="@drawable/default_person"
                         android:contentDescription="@string/image_cont_desc" />
 
                     <TextView
@@ -78,6 +81,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/profileImgv"
                         android:textColor="@android:color/white"
+                        android:text="custom age"
                         android:textSize="14sp" />
 
                     <TextView
@@ -86,6 +90,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/customageTtv"
                         android:textColor="@android:color/white"
+                        android:text="@{viewmodel.ownerDetails.data.city}"
                         android:textSize="14sp" />
 
                     <TextView
@@ -94,6 +99,7 @@
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/profileImgv"
                         android:layout_toEndOf="@+id/profileImgv"
+                        android:text="@{viewmodel.ownerDetails.data.name}"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -105,6 +111,7 @@
                         android:layout_toRightOf="@+id/profileImgv"
                         android:layout_toEndOf="@+id/profileImgv"
                         android:layout_below="@+id/nameTtv"
+                        android:text="@{viewmodel.ownerDetails.data.surname}"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -155,7 +162,19 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:animateLayoutChanges="true"
+                android:visibility="@{viewmodel.viewVisible ? View.VISIBLE : View.GONE}">
+
+                <com.wang.avi.AVLoadingIndicatorView
+                    android:id="@+id/onLayoutloadingInd"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center"
+                    android:visibility="@{!viewmodel.onProcessing ? View.GONE : View.VISIBLE}"
+                    style="@style/AVLoadingIndicatorView"
+                    app:indicatorName="BallPulseIndicator"
+                    app:indicatorColor="@color/colorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -168,39 +187,39 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/image_cont_desc"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     android:paddingLeft="18dp"
-                    android:textColor="@color/error_color" />
+                    android:textColor="@color/error_color"
+                    android:text="@string/swipe_to_edit_delete" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="@string/image_cont_desc"
                     android:paddingTop="75dp"
+                    android:text="@string/no_pets"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:visibility="@{!haspets ? View.VISIBLE : View.GONE}" />
+                    android:visibility="@{viewmodel.ownerDetails.ownerPets.size() == 0 ? View.VISIBLE : View.GONE}" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/image_cont_desc"
                     android:padding="25dp"
+                    android:text="@string/add_pet_label"
                     android:textSize="15sp"
                     android:gravity="center"
                     android:layout_gravity="center"
-                    android:visibility="@{!haspets ? View.VISIBLE : View.GONE}" />
+                    android:visibility="@{viewmodel.ownerDetails.ownerPets.size() == 0 ? View.VISIBLE : View.GONE}" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rcv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scrollbars="vertical"
-                    android:visibility="@{haspets ? View.VISIBLE : View.GONE}" />
+                    android:visibility="@{viewmodel.ownerDetails.ownerPets.size() > 0 ? View.VISIBLE : View.GONE}" />
 
             </LinearLayout>
 
@@ -211,7 +230,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:src="@drawable/logo"
+            android:src="@drawable/ic_add"
+            android:visibility="@{viewmodel.viewVisible ? View.VISIBLE : View.GONE}"
             app:layout_anchorGravity="bottom|right|end"
             app:layout_anchor="@id/appbatLlt" />
 

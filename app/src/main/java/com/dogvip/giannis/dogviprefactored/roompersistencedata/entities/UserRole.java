@@ -1,13 +1,10 @@
-package com.dogvip.giannis.dogviprefactored.room_persistence_data.entities;
+package com.dogvip.giannis.dogviprefactored.roompersistencedata.entities;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-
-import com.dogvip.giannis.dogviprefactored.BR;
-
-import org.json.JSONArray;
 
 import javax.inject.Inject;
 
@@ -18,6 +15,7 @@ import javax.inject.Inject;
 public class UserRole extends BaseObservable {
 
     @PrimaryKey
+    @ColumnInfo(name = "_id")
     private int id;
     private int user_id;
     private int role;
@@ -27,12 +25,19 @@ public class UserRole extends BaseObservable {
     private String age;
     private String mobile_number;
     private String image_url;
+    @Ignore
     private int pet_size;
+    @Ignore
     private int years_experience;
+    @Ignore
     private int pet_place;
+    @Ignore
     private int place_type;
+    @Ignore
     private String place_address;
+    @Ignore
     private String place_image_urls;
+    @Ignore
     private String website;
 
     @Inject

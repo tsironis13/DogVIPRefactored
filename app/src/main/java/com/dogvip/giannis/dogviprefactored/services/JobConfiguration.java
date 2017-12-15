@@ -11,6 +11,7 @@ import com.firebase.jobdispatcher.JobTrigger;
 import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
+import com.firebase.jobdispatcher.TriggerReason;
 
 import javax.inject.Inject;
 

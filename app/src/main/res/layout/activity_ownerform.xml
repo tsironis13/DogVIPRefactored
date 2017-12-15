@@ -27,6 +27,7 @@
             android:background="@color/colorPrimary" />
 
         <LinearLayout
+            android:id="@+id/cntLayt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/status_bar_height"
@@ -38,15 +39,28 @@
                 layout="@layout/toolbar" />
 
             <ScrollView
+                android:id="@+id/scrollView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fillViewport="true"
-                android:visibility="@{!viewmodel.processing ? View.VISIBLE : View.GONE}">
+                android:fillViewport="true">
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="10dp">
+                    android:paddingTop="10dp"
+                    android:animateLayoutChanges="true">
+
+                    <com.wang.avi.AVLoadingIndicatorView
+                        android:id="@+id/loadingInd"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:visibility="@{viewmodel.processing ? View.VISIBLE : View.GONE}"
+                        style="@style/AVLoadingIndicatorView"
+                        app:indicatorName="BallPulseIndicator"
+                        app:indicatorColor="@android:color/white"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
 
                     <TextView
                         android:id="@+id/reqfldsTtv"
@@ -56,7 +70,7 @@
                         android:textStyle="bold"
                         android:textSize="12sp"
                         android:text="@string/required_fields_owner"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/loadingInd"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent" />
 
@@ -66,7 +80,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:background="@null"
-                        android:visibility="@{viewmodel.deleteImageIconVisible ? View.VISIBLE : View.GONE}"
+                        android:visibility="@{viewmodel.deleteImageIconVisible}"
                         android:src="@drawable/ic_delete"
                         app:layout_constraintTop_toBottomOf="@+id/reqfldsTtv"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -80,7 +94,7 @@
                         android:text="@string/profile_photo_gr"
                         android:gravity="center"
                         android:layout_marginTop="15dp"
-                        android:visibility="@{viewmodel.data.id != 0  ? View.VISIBLE : View.GONE}"
+                        android:visibility="@{viewmodel.isImageUploadViewComponentsVisible ? View.VISIBLE : View.GONE}"
                         app:layout_constraintTop_toBottomOf="@+id/reqfldsTtv"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent" />
@@ -92,7 +106,7 @@
                         android:layout_marginTop="7dp"
                         android:contentDescription="@string/image_cont_desc"
                         android:src="@drawable/default_person"
-                        android:visibility="@{viewmodel.data.id != 0  ? View.VISIBLE : View.GONE}"
+                        android:visibility="@{viewmodel.isImageUploadViewComponentsVisible ? View.VISIBLE : View.GONE}"
                         app:layout_constraintTop_toBottomOf="@+id/profileLblTtv"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent" />
@@ -102,7 +116,7 @@
                         android:layout_height="85dp"
                         android:layout_marginTop="7dp"
                         android:background="@drawable/image_upload_background"
-                        android:visibility="@{viewmodel.data.id != 0  ? View.VISIBLE : View.GONE}"
+                        android:visibility="gone"
                         app:layout_constraintTop_toBottomOf="@+id/profileLblTtv"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent">
@@ -143,7 +157,7 @@
                         android:textStyle="bold"
                         android:text="@string/image_size_limit"
                         android:layout_marginTop="10dp"
-                        android:visibility="@{viewmodel.data.id != 0  ? View.VISIBLE : View.GONE}"
+                        android:visibility="@{viewmodel.isImageUploadViewComponentsVisible ? View.VISIBLE : View.GONE}"
                         app:layout_constraintTop_toBottomOf="@+id/profileImgv"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/reqfldsTtv" />

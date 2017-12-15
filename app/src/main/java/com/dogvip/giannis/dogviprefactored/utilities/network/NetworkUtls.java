@@ -3,6 +3,7 @@ package com.dogvip.giannis.dogviprefactored.utilities.network;
 import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.util.Log;
 
 import javax.inject.Inject;
 

@@ -13,9 +13,7 @@ import com.dogvip.giannis.dogviprefactored.responsecontroller.ResponseController
 import com.dogvip.giannis.dogviprefactored.responsecontroller.login.forgotpass.SubmitNewPasswordCommand;
 import com.dogvip.giannis.dogviprefactored.responsecontroller.login.forgotpass.ValidateForgotPassEmailCommand;
 import com.dogvip.giannis.dogviprefactored.utilities.network.NetworkUtls;
-import com.dogvip.giannis.dogviprefactored.utilities.network.RetryWithDelay;
-
-import java.util.InvalidPropertiesFormatException;
+import com.dogvip.giannis.dogviprefactored.utilities.errorhandling.RetryWithDelay;
 
 import javax.inject.Inject;
 

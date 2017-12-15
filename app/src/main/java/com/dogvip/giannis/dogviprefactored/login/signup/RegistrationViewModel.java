@@ -1,7 +1,6 @@
 package com.dogvip.giannis.dogviprefactored.login.signup;
 
 import android.accounts.NetworkErrorException;
-import android.util.Log;
 
 import com.dogvip.giannis.dogviprefactored.R;
 import com.dogvip.giannis.dogviprefactored.config.AppConfig;
@@ -16,10 +15,9 @@ import com.dogvip.giannis.dogviprefactored.responsecontroller.login.signin.SignI
 import com.dogvip.giannis.dogviprefactored.responsecontroller.login.signin.SignInUpGoogleCommand;
 import com.dogvip.giannis.dogviprefactored.responsecontroller.login.signup.SignUpEmailCommand;
 import com.dogvip.giannis.dogviprefactored.utilities.network.NetworkUtls;
-import com.dogvip.giannis.dogviprefactored.utilities.network.RetryWithDelay;
+import com.dogvip.giannis.dogviprefactored.utilities.errorhandling.RetryWithDelay;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
-import java.util.InvalidPropertiesFormatException;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -28,7 +26,6 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.processors.AsyncProcessor;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;

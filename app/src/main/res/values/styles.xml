@@ -11,6 +11,7 @@
     <style name="AppTheme" parent="Base.AppTheme" />
     <!-- Provide this theme to force navigation draw overlap status bar -->
     <style name="DashboardActivityTheme" parent="Base.AppTheme" />
+    <style name="OwnerProfileAppTheme" parent="Base.AppTheme" />
 
     <style name="TouchRipplePrimaryStyle" parent="Material.Drawable.Ripple.Touch">
         <item name="rd_rippleColor">@color/colorPrimary</item>

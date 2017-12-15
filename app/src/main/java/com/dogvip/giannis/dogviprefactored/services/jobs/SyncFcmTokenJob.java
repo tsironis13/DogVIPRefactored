@@ -5,8 +5,8 @@ import android.util.Log;
 import com.dogvip.giannis.dogviprefactored.config.AppConfig;
 import com.dogvip.giannis.dogviprefactored.pojo.sync.UploadFcmTokenRequest;
 import com.dogvip.giannis.dogviprefactored.retrofit.ServiceAPI;
-import com.dogvip.giannis.dogviprefactored.room_persistence_data.DogVipRoomDatabase;
-import com.dogvip.giannis.dogviprefactored.utilities.network.RetryWithDelay;
+import com.dogvip.giannis.dogviprefactored.roompersistencedata.DogVipRoomDatabase;
+import com.dogvip.giannis.dogviprefactored.utilities.errorhandling.RetryWithDelay;
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 
@@ -39,7 +39,7 @@ public class SyncFcmTokenJob extends JobService {
 
     @Override
     public boolean onStartJob(JobParameters job) {
-        Log.e(debugTag, "onStartJob: "+request + " "+mServiceAPI);
+        Log.e(debugTag, "SYNC FCM TOKEN JOB ON START JOB: ");
         request.setAction("save_registration_token");
         request.setAuthtoken(job.getExtras().getString("auth_token"));
         request.setFcmtoken(job.getExtras().getString("fcm_token"));
@@ -49,14 +49,13 @@ public class SyncFcmTokenJob extends JobService {
                 .subscribeOn(Schedulers.io())
                 .retryWhen(configureRetryWithDelayParams(3, 2000))
                 .subscribe(baseResponse -> {
-                    Log.e(debugTag, baseResponse.getCode() + " code");
                     if (baseResponse.getCode() == AppConfig.STATUS_OK) {
                         updateLclFcmToken()
                                 .retryWhen(configureRetryWithDelayParams(3, 2000))
                                 .subscribeOn(Schedulers.io())
                                 .subscribe(
                                         () -> {
-                                            Log.e(debugTag, "job successfully finished");
+                                            Log.e(debugTag, "SyncFcmTokenJob successfully finished");
                                             jobFinished(job, false);
 //                                        dogVipRoomDatabase.userDeviceDao().getDeviceDetails(android.os.Build.SERIAL).subscribe(new Consumer<UserDevice>() {
 //                                            @Override

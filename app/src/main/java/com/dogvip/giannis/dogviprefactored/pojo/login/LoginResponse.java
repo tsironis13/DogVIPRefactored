@@ -1,8 +1,8 @@
 package com.dogvip.giannis.dogviprefactored.pojo.login;
 
 import com.dogvip.giannis.dogviprefactored.pojo.BaseResponse;
-import com.dogvip.giannis.dogviprefactored.room_persistence_data.entities.Pet;
-import com.dogvip.giannis.dogviprefactored.room_persistence_data.entities.UserRole;
+import com.dogvip.giannis.dogviprefactored.roompersistencedata.entities.Pet;
+import com.dogvip.giannis.dogviprefactored.roompersistencedata.entities.UserRole;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

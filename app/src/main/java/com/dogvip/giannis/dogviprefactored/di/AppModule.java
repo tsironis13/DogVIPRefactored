@@ -8,7 +8,7 @@ import com.dogvip.giannis.dogviprefactored.app.MyApp;
 import com.dogvip.giannis.dogviprefactored.config.AppConfig;
 import com.dogvip.giannis.dogviprefactored.di.qualifiers.ApplicationContext;
 import com.dogvip.giannis.dogviprefactored.retrofit.ServiceAPI;
-import com.dogvip.giannis.dogviprefactored.room_persistence_data.DogVipRoomDatabase;
+import com.dogvip.giannis.dogviprefactored.roompersistencedata.DogVipRoomDatabase;
 
 import java.util.concurrent.TimeUnit;
 

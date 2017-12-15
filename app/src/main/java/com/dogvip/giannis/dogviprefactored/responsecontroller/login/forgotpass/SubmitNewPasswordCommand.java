@@ -23,10 +23,6 @@ public class SubmitNewPasswordCommand implements Command {
         this.mViewCallback = mViewCallback;
     }
 
-    public void clearCallback() {
-        this.mViewCallback = null;
-    }
-
     @Override
     public void executeOnSuccess(Response response) {
         mViewCallback.onSuccessNewPassChange(response);
@@ -35,5 +31,9 @@ public class SubmitNewPasswordCommand implements Command {
     @Override
     public void executeOnError(int resource) {
         mViewCallback.onError(resource);
+    }
+
+    public void clearCallback() {
+        this.mViewCallback = null;
     }
 }

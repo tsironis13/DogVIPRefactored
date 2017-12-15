@@ -1,6 +1,4 @@
-package com.dogvip.giannis.dogviprefactored.utilities.network;
-
-import android.util.Log;
+package com.dogvip.giannis.dogviprefactored.utilities.errorhandling;
 
 import org.reactivestreams.Publisher;
 

@@ -1,18 +1,14 @@
 package com.dogvip.giannis.dogviprefactored.services.jobs;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.dogvip.giannis.dogviprefactored.config.AppConfig;
 import com.dogvip.giannis.dogviprefactored.pojo.BaseRequest;
-import com.dogvip.giannis.dogviprefactored.pojo.Response;
 import com.dogvip.giannis.dogviprefactored.pojo.sync.SyncUserRolesAndPetsResponse;
 import com.dogvip.giannis.dogviprefactored.retrofit.ServiceAPI;
-import com.dogvip.giannis.dogviprefactored.room_persistence_data.DogVipRoomDatabase;
-import com.dogvip.giannis.dogviprefactored.room_persistence_data.entities.Pet;
-import com.dogvip.giannis.dogviprefactored.room_persistence_data.entities.StateEntity;
-import com.dogvip.giannis.dogviprefactored.room_persistence_data.entities.UserRole;
-import com.dogvip.giannis.dogviprefactored.utilities.network.RetryWithDelay;
+import com.dogvip.giannis.dogviprefactored.roompersistencedata.DogVipRoomDatabase;
+import com.dogvip.giannis.dogviprefactored.roompersistencedata.entities.UserRole;
+import com.dogvip.giannis.dogviprefactored.utilities.errorhandling.RetryWithDelay;
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 
@@ -22,8 +18,6 @@ import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
 import io.reactivex.Completable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -63,21 +57,21 @@ public class SyncLocalUserRolesAndPetsJob extends JobService {
                                 .subscribe(() -> {
                                             Log.e(debugTag, "SyncLocalUserRolesAndPetsJob successfully finished");
                                             jobFinished(job, false);
-                                            dogVipRoomDatabase.stateEntityDao().get().subscribe(stateEntities -> {
-                                                for (StateEntity stateEntity: stateEntities) {
-                                                    Log.e(debugTag, "ID: "+stateEntity.getId() + " UPDATE: "+stateEntity.getUpdated_at());
-                                                }
-                                            });
-                                            dogVipRoomDatabase.userRoleDao().getUserRoles().subscribe(userRoles -> {
-                                                for (UserRole userRole: userRoles) {
-                                                    Log.e(debugTag, "ID: "+userRole.getId() + " NAME: "+userRole.getName() +  " SURNAME: "+userRole.getSurname());
-                                                }
-                                            });
-                                            dogVipRoomDatabase.petDao().getAllPets().subscribe(pets -> {
-                                                for (Pet pet: pets) {
-                                                    Log.e(debugTag, "ID: "+pet.getP_id() + " NAME: "+pet.getP_name() +  " race: "+pet.getRace());
-                                                }
-                                            });
+//                                            dogVipRoomDatabase.stateEntityDao().get().subscribe(stateEntities -> {
+//                                                for (UserData stateEntity: stateEntities) {
+//                                                    Log.e(debugTag, "ID: "+stateEntity.getId() + " UPDATE: "+stateEntity.getUpdated_at());
+//                                                }
+//                                            });
+//                                            dogVipRoomDatabase.userRoleDao().getUserRoles().subscribe(userRoles -> {
+//                                                for (UserRole userRole: userRoles) {
+//                                                    Log.e(debugTag, "ID: "+userRole.getId() + " NAME: "+userRole.getName() +  " SURNAME: "+userRole.getSurname());
+//                                                }
+//                                            });
+//                                            dogVipRoomDatabase.petDao().getAllPets().subscribe(pets -> {
+//                                                for (Pet pet: pets) {
+//                                                    Log.e(debugTag, "ID: "+pet.getP_id() + " NAME: "+pet.getP_name() +  " race: "+pet.getRace());
+//                                                }
+//                                            });
                                         },
                                         onError -> {
                                             Log.e(debugTag, "job finished with error, reschedule it");
@@ -104,12 +98,13 @@ public class SyncLocalUserRolesAndPetsJob extends JobService {
 
     private Completable syncLocalUserRolesAndPets(SyncUserRolesAndPetsResponse userRolesAndPets) {
         return Completable.fromAction(() -> {
+//            Log.e(debugTag, dogVipRoomDatabase + " ");
                 dogVipRoomDatabase.stateEntityDao().updateUserStateEntity(System.currentTimeMillis()/1000L, new int[]{1,2,3});
-                dogVipRoomDatabase.userRoleDao().deleteUserRoleData();
+                dogVipRoomDatabase.userRoleDao().deleteAllUserRoles();
                 if (!userRolesAndPets.getUserRoles().isEmpty()) {
                     List<Long> rows = dogVipRoomDatabase
                                                 .userRoleDao()
-                                                .insertUserRole(userRolesAndPets.getUserRoles());
+                                                .insertUserRoles(userRolesAndPets.getUserRoles());
                     if (!rows.isEmpty()) {
                         dogVipRoomDatabase
                                     .petDao()

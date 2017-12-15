@@ -186,7 +186,7 @@ public class RegisterFrgmt extends BaseFragment implements LoginContract.SignUpV
     }
 
     @Override
-    public void onSuccessEmailSignUp(BaseResponse response) {
+    public void onSuccessEmailSignUp() {
         setProcessing(false);
         ((LoginActivity)getActivity()).showNotification(getResources().getString(R.string.welcome), getResources().getString(R.string.confirm_account));
         getFragmentManager()

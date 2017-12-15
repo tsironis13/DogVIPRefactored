@@ -1,37 +1,42 @@
 package com.dogvip.giannis.dogviprefactored.owner.form;
 
+import android.arch.persistence.room.Insert;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.dogvip.giannis.dogviprefactored.R;
 import com.dogvip.giannis.dogviprefactored.accountmanager.MyAccountManager;
 import com.dogvip.giannis.dogviprefactored.base.activity.BaseActivity;
 import com.dogvip.giannis.dogviprefactored.config.AppConfig;
-import com.dogvip.giannis.dogviprefactored.dashboard.DashboardRetainFragment;
 import com.dogvip.giannis.dogviprefactored.databinding.ActivityOwnerformBinding;
 import com.dogvip.giannis.dogviprefactored.lifecycle.Lifecycle;
-import com.dogvip.giannis.dogviprefactored.room_persistence_data.entities.UserRole;
+import com.dogvip.giannis.dogviprefactored.owner.profile.OwnerProfileActivity;
+import com.dogvip.giannis.dogviprefactored.pojo.BaseRequest;
+import com.dogvip.giannis.dogviprefactored.pojo.owner.form.SubmitOwnerFormRequest;
+import com.dogvip.giannis.dogviprefactored.roompersistencedata.entities.UserRole;
 import com.dogvip.giannis.dogviprefactored.upload.ImageUploadRetainFragment;
 import com.dogvip.giannis.dogviprefactored.upload.ImageUploadViewModel;
 import com.dogvip.giannis.dogviprefactored.utilities.eventbus.RxEventBus;
-import com.dogvip.giannis.dogviprefactored.utilities.ui.MyAlertDialogFragment;
 import com.dogvip.giannis.dogviprefactored.utilities.ui.MyDateDialogFragment;
 import com.dogvip.giannis.dogviprefactored.utilities.ui.UIUtls;
 import com.jakewharton.rxbinding2.view.RxView;
 
 import javax.inject.Inject;
 
-import dagger.android.AndroidInjection;
+import io.reactivex.Completable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Action;
 
 /**
  * Created by giannis on 8/12/2017.
@@ -42,6 +47,7 @@ public class OwnerFormActivity extends BaseActivity implements OwnerFormContract
     private ActivityOwnerformBinding mBinding;
     private MyDateDialogFragment myDateDialogFragment;
     private boolean ownerExists;
+//    private Bundle savedInstanceState;
     @Inject
     MyAccountManager mAccountManager;
     @Inject
@@ -58,15 +64,20 @@ public class OwnerFormActivity extends BaseActivity implements OwnerFormContract
     AwesomeValidation mAwesomeValidation;
     @Inject
     UserRole userRole;
+    @Inject
+    SubmitOwnerFormRequest submitOwnerFormRequest;
+    @Inject
+    BaseRequest baseRequest;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_ownerform);
         setSupportActionBar(mBinding.incltoolbar.toolbar);
-        mBinding.setViewmodel(mViewModel);
+        if (getSupportActionBar()!= null)getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initializeViewModel();
         initializeImageUploadViewModel();
+//        this.savedInstanceState = savedInstanceState;
         if (savedInstanceState != null) {
             ownerExists = savedInstanceState.getBoolean(getResources().getString(R.string.owner_exists));
             MyDateDialogFragment dialogFragment = (MyDateDialogFragment) getSupportFragmentManager().findFragmentByTag(getResources().getString(R.string.date_dialog_fgmt));
@@ -82,14 +93,20 @@ public class OwnerFormActivity extends BaseActivity implements OwnerFormContract
                 ownerExists = getIntent().getExtras().getBoolean(getResources().getString(R.string.owner_exists));
             }
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, AppConfig.cities);
-        mBinding.cityEdt.setAdapter(adapter);
+        mBinding.setViewmodel(mViewModel);
+        mBinding.executePendingBindings();
+        mBinding.cityEdt.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, AppConfig.cities));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mViewModel.checkOwnerExists(ownerExists, mAccountManager.getAccountDetails());
+//        if (savedInstanceState == null) {
+////            mViewModel.checkOwnerExists(ownerExists, mAccountManager.getAccountDetails());
+//        } else {
+////            mViewModel.setData(userRole);
+//        }
         Disposable disp = RxView.clicks(mBinding.ageEdt).subscribe(o -> {
             MyDateDialogFragment.setDialogType(1);
             myDateDialogFragment.show(getSupportFragmentManager(), getResources().getString(R.string.date_dialog_fgmt));
@@ -115,6 +132,12 @@ public class OwnerFormActivity extends BaseActivity implements OwnerFormContract
         mOwnerFormRetainFragment.retainViewModel(mViewModel);
         mImageUploadRetainFragment.retainViewModel(mImageUploadViewModel);
         if (myDateDialogFragment != null)myDateDialogFragment.clearInvokingActivity();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     @Override
@@ -152,26 +175,61 @@ public class OwnerFormActivity extends BaseActivity implements OwnerFormContract
 
     @Override
     public void onInvalidDateSet() {
-//        mBinding.ageEdt.setText("");
+        onError(AppConfig.getCodes().get(AppConfig.ERROR_INVALID_DATE));
     }
 
     @Override
     public void onError(int resource) {
+        uiUtls.showSnackBar(mBinding.cntLayt, getResources().getString(resource), getResources().getString(R.string.close), Snackbar.LENGTH_LONG).subscribe();
+    }
+
+    @Override
+    public void onErrorRetry(int resource) {
+        Log.e(debugTag, "onErrorRetry");
+        uiUtls.showSnackBar(mBinding.cntLayt, getResources().getString(resource), getResources().getString(R.string.retry), Snackbar.LENGTH_INDEFINITE).subscribe(aBoolean -> mViewModel.onRetry());
 
     }
 
     @Override
-    public void onSuccessOwnerAdded() {
+    public void onSuccessOwnerAdded(UserRole userRole) {
+        Log.e(debugTag, userRole.getImage_url() + " IMAGE URL");
+        ownerExists = true;
+        setTitle(getResources().getString(R.string.edit_owner));
+        uiUtls.showSnackBar(mBinding.cntLayt, getResources().getString(R.string.owner_added), getResources().getString(R.string.close), Snackbar.LENGTH_LONG).subscribe();
+        mViewModel.setData(userRole);
+//        mBinding.scrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+////                mBinding.scrollView.getViewTreeObserver().removeOnGlobalLayoutListene‌​r(this);
+//                mBinding.scrollView.fullScroll(View.FOCUS_UP);
+//            }
+//        });
+    }
 
+    @Override
+    public void onSuccessOwnerFormDetails(UserRole userRole) {
+        Log.e(debugTag, "onSuccessOwnerFormDetails: "+ userRole.getImage_url());
+        ownerExists = true;
+        setTitle(getResources().getString(R.string.edit_owner));
+        mViewModel.setData(userRole);
+//        mBinding.scrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+////                mBinding.scrollView.getViewTreeObserver().removeOnGlobalLayoutListene‌​r(this);
+//                mBinding.scrollView.fullScroll(View.FOCUS_UP);
+//            }
+//        });
     }
 
     @Override
     public void onSuccessOwnerEdited() {
-
+        startActivity(new Intent(this, OwnerProfileActivity.class));
     }
 
     @Override
     public UserRole ownerDoesNotExist() {
+        setTitle(getResources().getString(R.string.add_owner));
+        userRole.setRole(1);
         userRole.setName(mBinding.nameEdt.getText().toString());
         userRole.setSurname(mBinding.surnameEdt.getText().toString());
         userRole.setAge(mBinding.hiddenAgeEdt.getText().toString());
@@ -182,17 +240,10 @@ public class OwnerFormActivity extends BaseActivity implements OwnerFormContract
 
     @Override
     public void ownerExists() {
-
-    }
-
-    @Override
-    public void onProcessing() {
-
-    }
-
-    @Override
-    public void onStopProcessing() {
-
+        setTitle(getResources().getString(R.string.edit_owner));
+        baseRequest.setAction(getResources().getString(R.string.get_owner_form_details));
+        baseRequest.setAuthtoken(mAccountManager.getAccountDetails().getToken());
+        mViewModel.fetchOwnerFormDetails(baseRequest, mAccountManager.getAccountDetails().getUserId());
     }
 
     private void submitForm() {
@@ -200,7 +251,8 @@ public class OwnerFormActivity extends BaseActivity implements OwnerFormContract
         mAwesomeValidation.addValidation(mBinding.nameEdt, ".*\\S.*", getResources().getString(R.string.required_field));
         mAwesomeValidation.addValidation(mBinding.surnameEdt, ".*\\S.*", getResources().getString(R.string.required_field));
         mAwesomeValidation.addValidation(mBinding.ageEdt, ".*\\S.*", getResources().getString(R.string.required_field));
-        mViewModel.submitForm(mAwesomeValidation, userRole);
+        submitOwnerFormRequest.setAuthtoken(mAccountManager.getAccountDetails().getToken());
+        mViewModel.submitForm(mAwesomeValidation, submitOwnerFormRequest);
     }
 
     public void hideSoftKeyboard() {

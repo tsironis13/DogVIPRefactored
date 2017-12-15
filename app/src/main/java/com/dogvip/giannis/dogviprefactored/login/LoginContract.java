@@ -34,7 +34,7 @@ public interface LoginContract {
     }
 
     interface SignUpView extends SignInUpFbGoogleView {
-        void onSuccessEmailSignUp(BaseResponse response);
+        void onSuccessEmailSignUp();
     }
 
     interface ForgotPassView extends View {

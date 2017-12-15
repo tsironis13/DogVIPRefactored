@@ -19,6 +19,7 @@
     <string name="retained_forgotpass_fgmt">retained_forgotpass_fgmt</string>
     <string name="retained_dashboard_act">retained_dashboard_act</string>
     <string name="retained_owner_form_act">retained_owner_form_act</string>
+    <string name="retained_owner_profile_act">retained_owner_profile_act</string>
     <string name="retained_image_upload_fgmt">retained_image_upload_fgmt</string>
     <string name="alert_dialog_fgmt">alert_dialog_fgmt</string>
     <string name="date_dialog_fgmt">date_dialog_fgmt</string>
@@ -32,6 +33,8 @@
     <string name="forgotpass_label">Ξέχασα τον κωδικό μου</string>
     <string name="logout">Αποσύνδεση</string>
     <string name="logout_dialog_title">Αποσύνδεση χρήστη. Είσαι σίγουρος?</string>
+    <string name="delete_owner_dialog_title">Διαγραφή Ιδιοκτήτη</string>
+    <string name="delete_owner_dialog_msg">Ο ιδιοκτήτης και όλα τα κατοικίδια του θα διαγραφούν οριστικά.</string>
     <string name="yes">ΝΑΙ</string>
     <string name="no">ΟΧΙ</string>
 
@@ -44,6 +47,9 @@
     <string name="signin_user">signin_user</string>
     <string name="forgot_paswrd">forgot_password</string>
     <string name="save_registration_token">save_registration_token</string>
+    <string name="get_my_owner_details">get_my_owner_details</string>
+    <string name="get_owner_form_details">get_owner_form_details</string>
+    <string name="delete_owner">delete_owner</string>
 
     <string name="signin_btn_label">Εισοδος</string>
     <string name="register_btn_label">Εγγραφη</string>
@@ -58,6 +64,9 @@
     <string name="sign_up_cancel">Η εγγραφή ακυρώθηκε.</string>
     <string name="signin_cancel">Η είσοδος ακυρώθηκε.</string>
     <string name="close">Κλεισιμο</string>
+    <string name="retry">Ξαναπροσπαθησε</string>
+    <string name="add_owner">Δημιουργία νέου</string>
+    <string name="edit_owner">Επεξεργασία προφίλ</string>
     <string name="required_field">Υποχρεωτικό πεδίο</string>
     <string name="not_valid_email">Μη έγκυρο email</string>
     <string name="not_valid_pass">Απαιτείται κωδικός 8 λατινικών χαρακτήρων</string>
@@ -65,17 +74,24 @@
     <string name="not_valid_name_fld">Απαιτούνται μόνο χαρακτήρες</string>
     <string name="welcome">Καλωσήρθατε στη DogVIP.</string>
     <string name="reset_passwrd_notfctn_title">Αλλαγή κωδικού στη DogVIP.</string>
+    <string name="invalid_date">Μη έγκυρη ημερομηνία.</string>
     <string name="invalid_email">Μη έγκυρο email.</string>
     <string name="email_not_available">Το συγκεκριμένο email υπάρχει.</string>
+    <string name="city_no_match">Η συγκεκριμένη πόλη δεν είναι διαθέσιμη.</string>
     <string name="invalid_password">Μη έγκυρος κωδικός.</string>
     <string name="pass_mismatch">Ασυμφωνία κωδικών.</string>
     <string name="invalid_email_password">Μη έγκυρο email ή κωδικός πρόσβασης.</string>
     <string name="account_not_verified">Ο λογαριασμός δεν έχει εγκριθεί ακόμα.</string>
     <string name="email_in_use">Το email χρησιμοποιείται από κάποιον αλλο λογαριασμό.</string>
     <string name="email_not_found">Το συγκεκριμένο email δεν βρέθηκε.</string>
+    <string name="no_owner_exists">Δεν βρέθηκε ιδιοκτήτης για το λογαριασμό.</string>
     <string name="new_password_is_same">Ο νέος κωδικός δεν μπορεί να είναι ίδιος με τον παλιό.</string>
     <string name="reset_passwrd_success">Η αλλαγή του κωδικού πραγματοποιήθηκε με επιτυχία.</string>
     <string name="required_fields_owner">* Υποχρεωτικά πεδία. \n \n ** Με τα παρακάτω στοιχεία καταχωρείσαι σαν ιδιοκτήτης στην εφαρμογή.</string>
+    <string name="owner_added">Ο ιδιοκτήτης προστέθηκε με επιτυχία.</string>
+    <string name="swipe_to_edit_delete">Σύρετε αριστερά για επεξεργασία/διαγραφή.</string>
+    <string name="no_pets">Δεν υπάρχουν διαθέσιμα κατοικίδια.</string>
+    <string name="add_pet_label">Πατήστε το κουμπί προσθήκη για να προσθέσετε τα κατοικίδια σας!</string>
     <string name="profile_photo_gr">ΕΙΚΟΝΑ ΠΡΟΦΙΛ</string>
     <string name="surname_gr">ΕΠΙΘΕΤΟ</string>
     <string name="city_gr">ΠΟΛΗ</string>
@@ -89,6 +105,8 @@
     <string name="birth_date_plhldr">*<u>Ημ. γέννησης</u></string>
     <string name="city_plhldr"><u>Πόλη</u></string>
     <string name="phone_plhldr"><u>Τηλέφωνο</u></string>
+    <string name="edit">Επεξεργασία</string>
+    <string name="delete">Διαγραφή</string>
 
     <!--<string name="required_field">Υποχρεωτικό πεδίο</string>-->
     <string name="required_fields">* Υποχρεωτικά πεδία.</string>
@@ -112,6 +130,7 @@
     <string name="is_forgot_pass_email_valid">is_forgot_pass_email_valid</string>
     <string name="default_notification_channel_id">default_channel</string>
     <string name="owner_exists">owner_exists</string>
+    <string name="owner_deleted">owner_deleted</string>
 
     <string name="no_internet_connection">Σφάλμα. Χωρίς σύνδεση.</string>
     <string name="error">Σφάλμα. Προσπάθησε ξανά.</string>

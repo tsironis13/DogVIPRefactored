@@ -1,9 +1,12 @@
 package com.dogvip.giannis.dogviprefactored.config;
 
+import android.util.SparseArray;
 import android.util.SparseIntArray;
 
 import com.dogvip.giannis.dogviprefactored.BuildConfig;
 import com.dogvip.giannis.dogviprefactored.R;
+import com.dogvip.giannis.dogviprefactored.utilities.errorhandling.throwables.NoOnwerExistsException;
+import com.dogvip.giannis.dogviprefactored.utilities.errorhandling.throwables.StatusErrorException;
 
 /**
  * Created by giannis on 4/11/2017.
@@ -28,6 +31,9 @@ public class AppConfig {
     public static final int REQUEST_RUNNING = 10;
     public static final int REQUEST_SUCCEEDED = 11;
     public static final int REQUEST_FAILED = -11;
+    //TO HANDLE LOADING PROCESSING BEFORE LAYOUT APPEARS OR ON LAYOUT
+    public static final int PROCESSING_BASE_TYPE = 20;
+    public static final int PROCESSING_ON_LAYOUT_TYPE = 25;
     //STATUS CODES
     public static final int STATUS_OK = 200;
     public static final int STATUS_ERROR = -200;
@@ -44,6 +50,9 @@ public class AppConfig {
     private static final int ERROR_EMAIL_USED = -280;
     private static final int ERROR_EMAIL_NOT_FOUND = -290;
     private static final int ERROR_NEW_PASSWORD_IS_SAME = -300;
+    public static final int ERROR_INVALID_DATE = - 301;
+    public static final int ERROR_CITY_NO_MATCH = -302;
+    private static final int ERROR_NO_OWNER_EXISTS = -320;
 
     public static final int GOOGLE_REQ_CODE = 9001;
 
@@ -305,6 +314,7 @@ public class AppConfig {
     };
 
     private static final SparseIntArray inputValidationCodes = new SparseIntArray();
+    private static final SparseArray<Throwable> errorThrowables = new SparseArray<>();
 
     public static SparseIntArray getCodes() {
         inputValidationCodes.put(ERROR_NO_CONNECTION, R.string.no_internet_connection);
@@ -321,6 +331,9 @@ public class AppConfig {
         inputValidationCodes.put(ERROR_EMAIL_USED, R.string.email_in_use);
         inputValidationCodes.put(ERROR_EMAIL_NOT_FOUND, R.string.email_not_found);
         inputValidationCodes.put(ERROR_NEW_PASSWORD_IS_SAME, R.string.new_password_is_same);
+        inputValidationCodes.put(ERROR_INVALID_DATE, R.string.invalid_date);
+        inputValidationCodes.put(ERROR_CITY_NO_MATCH, R.string.city_no_match);
+        inputValidationCodes.put(ERROR_NO_OWNER_EXISTS, R.string.no_owner_exists);
 //        inputValidationCodes.put(ERROR_INVALID_IMAGE_SIZE, R.string.invalid_image_size);
 //        inputValidationCodes.put(ERROR_NO_OWNER_EXISTS, R.string.no_owner_exists);
 //        inputValidationCodes.put(ERROR_AGE_NOT_VALID, R.string.not_valid_age);
@@ -328,5 +341,11 @@ public class AppConfig {
 //        inputValidationCodes.put(ERROR_NO_PROF_EXISTS, R.string.no_prof_exists);
 
         return inputValidationCodes;
+    }
+
+    public static SparseArray<Throwable> getErrorThrowables() {
+        errorThrowables.put(STATUS_ERROR, new StatusErrorException());
+        errorThrowables.put(ERROR_NO_OWNER_EXISTS, new NoOnwerExistsException());
+        return errorThrowables;
     }
 }

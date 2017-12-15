@@ -1,6 +1,9 @@
 package com.dogvip.giannis.dogviprefactored.dashboard;
 
 import android.arch.persistence.room.EmptyResultSetException;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import com.dogvip.giannis.dogviprefactored.config.AppConfig;
 import com.dogvip.giannis.dogviprefactored.lifecycle.Lifecycle;
@@ -8,16 +11,17 @@ import com.dogvip.giannis.dogviprefactored.pojo.Response;
 import com.dogvip.giannis.dogviprefactored.pojo.account.UserAccount;
 import com.dogvip.giannis.dogviprefactored.requestmanager.DashboardRequestManager;
 import com.dogvip.giannis.dogviprefactored.responsecontroller.ResponseController;
-import com.dogvip.giannis.dogviprefactored.room_persistence_data.DogVipRoomDatabase;
-import com.dogvip.giannis.dogviprefactored.room_persistence_data.entities.UserDevice;
-import com.dogvip.giannis.dogviprefactored.room_persistence_data.entities.UserRole;
+import com.dogvip.giannis.dogviprefactored.roompersistencedata.DogVipRoomDatabase;
+import com.dogvip.giannis.dogviprefactored.roompersistencedata.entities.UserDevice;
 import com.dogvip.giannis.dogviprefactored.services.JobConfiguration;
-import com.dogvip.giannis.dogviprefactored.utilities.network.RetryWithDelay;
+import com.dogvip.giannis.dogviprefactored.utilities.errorhandling.RetryWithDelay;
+import com.dogvip.giannis.dogviprefactored.utilities.ui.MyAlertDialogFragment;
+import com.dogvip.giannis.dogviprefactored.utilities.ui.alertdialogcontroller.AlertDialogController;
+import com.dogvip.giannis.dogviprefactored.utilities.ui.alertdialogcontroller.LogoutDialogCommand;
 
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
@@ -30,6 +34,7 @@ public class DashboardViewModel implements DashboardContract.ViewModel {
     private DashboardRequestManager mDashboardRequestManager;
     private DashboardContract.View mViewCallback;
     private int requestState;
+    private MyAlertDialogFragment myAlertDialogFragment;
     @Inject
     DogVipRoomDatabase dogVipRoomDatabase;
     @Inject
@@ -40,7 +45,8 @@ public class DashboardViewModel implements DashboardContract.ViewModel {
     RetryWithDelay retryWithDelay;
     @Inject
     JobConfiguration mJobConfiguration;
-
+    @Inject
+    LogoutDialogCommand logoutDialogCommand;
 
     @Inject
     public DashboardViewModel(DashboardRequestManager dashboardRequestManager) {
@@ -50,6 +56,7 @@ public class DashboardViewModel implements DashboardContract.ViewModel {
     @Override
     public void onViewAttached(Lifecycle.View viewCallback) {
         this.mViewCallback = (DashboardContract.View) viewCallback;
+        logoutDialogCommand.setViewCallback(mViewCallback);
     }
 
     @Override
@@ -57,7 +64,9 @@ public class DashboardViewModel implements DashboardContract.ViewModel {
 
     @Override
     public void onViewDetached() {
+        if (myAlertDialogFragment != null) myAlertDialogFragment = null;
         mViewCallback = null;
+        logoutDialogCommand.clearCallback();
     }
 
     @Override
@@ -71,10 +80,37 @@ public class DashboardViewModel implements DashboardContract.ViewModel {
     }
 
     @Override
+    public void initializeAlertDialog() {
+        myAlertDialogFragment = MyAlertDialogFragment.newInstance();
+    }
+
+    @Override
+    public void showLogoutDialog(FragmentManager fragmentManager, String tag) {
+        if (myAlertDialogFragment == null) initializeAlertDialog();
+        myAlertDialogFragment.setCommand(logoutDialogCommand);
+        Bundle bundle = new Bundle();
+        bundle.putString("type", "logout");
+        myAlertDialogFragment.setArguments(bundle);
+        myAlertDialogFragment.show(fragmentManager, tag);
+    }
+
+    @Override
+    public void pickDialogByType(MyAlertDialogFragment dialogFragment, FragmentManager fragmentManager, String tag, String type) {
+        if (type.equals("logout")) {
+            dialogFragment.setCommand(logoutDialogCommand);
+        }
+    }
+
+    @Override
+    public void setAlertDialogMsgs(String dialogTtl, String dialogMsg, String dialogNegativeText, String dialogPositiveText) {
+        MyAlertDialogFragment.setDialogMsgs(dialogTtl, dialogMsg, dialogNegativeText, dialogPositiveText);
+    }
+
+    @Override
     public void checkOwnerExists(int userId) {
         dogVipRoomDatabase
                     .userRoleDao()
-                    .checkOwnerExists(userId)
+                    .fetchOwnerDetails(userId, 1)
                     .subscribeOn(Schedulers.io())
                     .retryWhen(configureRetryWithDelayParams(3, 250))
                     .subscribe(userRole -> {
@@ -93,6 +129,7 @@ public class DashboardViewModel implements DashboardContract.ViewModel {
 
     @Override
     public void syncFcmToken(UserAccount userAccount) {
+        Log.e(debugTag, "syncFcmToken DASHBOARD VIEW MODEL");
         dogVipRoomDatabase
                     .userDeviceDao()
                     .getDeviceDetails(android.os.Build.SERIAL)
@@ -140,7 +177,6 @@ public class DashboardViewModel implements DashboardContract.ViewModel {
     }
 
     private Completable updateLclFcmToken(int userId) {
-        Log.e(debugTag, "userIDDDD: "+userId);
         return Completable.fromAction(() -> {
             dogVipRoomDatabase
                             .userDeviceDao()
@@ -152,7 +188,7 @@ public class DashboardViewModel implements DashboardContract.ViewModel {
     private Completable clearLocalUserData() {
         return Completable.fromAction(() -> {
                         dogVipRoomDatabase.stateEntityDao().deleteUserState(new int[]{1,2,3});
-                        dogVipRoomDatabase.userRoleDao().deleteUserRoleData();
+                        dogVipRoomDatabase.userRoleDao().deleteAllUserRoles();
 //            Log.e(debugTag, x + " longggggg");
         });
     }

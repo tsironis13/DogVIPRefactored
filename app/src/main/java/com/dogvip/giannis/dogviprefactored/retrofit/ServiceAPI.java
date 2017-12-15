@@ -2,6 +2,8 @@ package com.dogvip.giannis.dogviprefactored.retrofit;
 
 import com.dogvip.giannis.dogviprefactored.pojo.BaseRequest;
 import com.dogvip.giannis.dogviprefactored.pojo.Response;
+import com.dogvip.giannis.dogviprefactored.pojo.owner.form.SubmitOwnerFormRequest;
+import com.dogvip.giannis.dogviprefactored.pojo.owner.profile.DeleteOwnerRequest;
 import com.dogvip.giannis.dogviprefactored.pojo.sync.UploadFcmTokenRequest;
 import com.dogvip.giannis.dogviprefactored.pojo.login.SignInEmailRequest;
 import com.dogvip.giannis.dogviprefactored.pojo.login.SignInUpFbGoogleRequest;
@@ -36,5 +38,17 @@ public interface ServiceAPI {
 
     @POST("actions.php")
     Flowable<Response> syncUserRolesAndPets(@Body BaseRequest request);
+
+    @POST("actions.php")
+    Flowable<Response> submitOwnerForm(@Body SubmitOwnerFormRequest request);
+
+    @POST("actions.php")
+    Flowable<Response> fetchOwnerFormDetails(@Body BaseRequest request);
+
+    @POST("actions.php")
+    Flowable<Response> fetchOwnerProfileDetails(@Body BaseRequest request);
+
+    @POST("actions.php")
+    Flowable<Response> deleteOwner(@Body DeleteOwnerRequest request);
 
 }
