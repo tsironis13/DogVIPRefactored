@@ -1,5 +1,7 @@
 package com.dogvip.giannis.dogviprefactored.utilities.errorhandling;
 
+import android.util.Log;
+
 import org.reactivestreams.Publisher;
 
 import java.util.concurrent.TimeUnit;
@@ -50,8 +52,13 @@ public class RetryWithDelay implements Function<Flowable<? extends Throwable>, F
     @Override
     public Flowable<?> apply(@NonNull Flowable<? extends Throwable> throwableFlowable) throws Exception {
         return throwableFlowable.flatMap((Function<Throwable, Publisher<?>>) throwable -> {
-            if (++retryCount < maxRetries) return Flowable.timer(retryDelayMillis, TimeUnit.MILLISECONDS);
-            return Flowable.error(throwable);
+//            Log.e("debugTag", retryCount + " RETRY COUNT");
+            if (++retryCount < maxRetries) {
+                return Flowable.timer(retryDelayMillis, TimeUnit.MILLISECONDS);
+            } else {
+                retryCount = 0;
+                return Flowable.error(throwable);
+            }
         });
     }
 

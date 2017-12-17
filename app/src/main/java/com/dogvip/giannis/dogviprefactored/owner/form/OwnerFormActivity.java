@@ -28,6 +28,7 @@ import com.dogvip.giannis.dogviprefactored.roompersistencedata.entities.UserRole
 import com.dogvip.giannis.dogviprefactored.upload.ImageUploadRetainFragment;
 import com.dogvip.giannis.dogviprefactored.upload.ImageUploadViewModel;
 import com.dogvip.giannis.dogviprefactored.utilities.eventbus.RxEventBus;
+import com.dogvip.giannis.dogviprefactored.utilities.ui.MyAlertDialogFragment;
 import com.dogvip.giannis.dogviprefactored.utilities.ui.MyDateDialogFragment;
 import com.dogvip.giannis.dogviprefactored.utilities.ui.UIUtls;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -37,6 +38,7 @@ import javax.inject.Inject;
 import io.reactivex.Completable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by giannis on 8/12/2017.
@@ -79,11 +81,17 @@ public class OwnerFormActivity extends BaseActivity implements OwnerFormContract
         initializeImageUploadViewModel();
 //        this.savedInstanceState = savedInstanceState;
         if (savedInstanceState != null) {
-            ownerExists = savedInstanceState.getBoolean(getResources().getString(R.string.owner_exists));
-            MyDateDialogFragment dialogFragment = (MyDateDialogFragment) getSupportFragmentManager().findFragmentByTag(getResources().getString(R.string.date_dialog_fgmt));
+            MyAlertDialogFragment dialogFragment = (MyAlertDialogFragment) getSupportFragmentManager().findFragmentByTag(getResources().getString(R.string.alert_dialog_fgmt));
             if (dialogFragment != null) {
-                myDateDialogFragment = dialogFragment;
-                dialogFragment.setInvokingActivity(this);
+                mViewModel.pickDialogByType(dialogFragment, dialogFragment.getArguments().getString("type"));
+            } else {
+                mViewModel.initializeAlertDialog();
+            }
+            ownerExists = savedInstanceState.getBoolean(getResources().getString(R.string.owner_exists));
+            MyDateDialogFragment dateDialogFragment = (MyDateDialogFragment) getSupportFragmentManager().findFragmentByTag(getResources().getString(R.string.date_dialog_fgmt));
+            if (dateDialogFragment != null) {
+                myDateDialogFragment = dateDialogFragment;
+                dateDialogFragment.setInvokingActivity(this);
             } else {
                 setUpDialogFragment();
             }
@@ -112,6 +120,11 @@ public class OwnerFormActivity extends BaseActivity implements OwnerFormContract
             myDateDialogFragment.show(getSupportFragmentManager(), getResources().getString(R.string.date_dialog_fgmt));
         });
         RxEventBus.add(this, disp);
+        Disposable disp1 = RxView.clicks(mBinding.profileImgv).subscribe(o -> {
+            mViewModel.setAlertDialogMsgs(getResources().getString(R.string.upload_image_dialog_title), getResources().getString(R.string.upload_image_dialog_msg), getResources().getString(R.string.gallery),getResources().getString(R.string.camera));
+            mViewModel.showUploadImageDialog(getSupportFragmentManager(), getResources().getString(R.string.alert_dialog_fgmt));
+        });
+        RxEventBus.add(this, disp1);
     }
 
     @Override
@@ -132,6 +145,18 @@ public class OwnerFormActivity extends BaseActivity implements OwnerFormContract
         mOwnerFormRetainFragment.retainViewModel(mViewModel);
         mImageUploadRetainFragment.retainViewModel(mImageUploadViewModel);
         if (myDateDialogFragment != null)myDateDialogFragment.clearInvokingActivity();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == AppConfig.EXTERNAL_CONTENT_URI) {
+                Log.e(debugTag, "external content uri");
+            } else {
+
+            }
+        }
     }
 
     @Override
@@ -160,6 +185,25 @@ public class OwnerFormActivity extends BaseActivity implements OwnerFormContract
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onDeleteOwnerImageAction() {
+        Log.e(debugTag, "onDeleteOwnerImageAction");
+    }
+
+    @Override
+    public void onGalleryUploadAction() {
+        Log.e(debugTag, "onGalleryUploadAction");
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.image_choose_label)), AppConfig.EXTERNAL_CONTENT_URI);
+    }
+
+    @Override
+    public void onCameraUploadAction() {
+        Log.e(debugTag, "onCameraUploadAction");
     }
 
     @Override

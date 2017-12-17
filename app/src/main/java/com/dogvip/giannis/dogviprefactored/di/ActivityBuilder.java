@@ -11,6 +11,7 @@ import com.dogvip.giannis.dogviprefactored.owner.form.OwnerFormActivity;
 import com.dogvip.giannis.dogviprefactored.owner.form.OwnerFormActivityModule;
 import com.dogvip.giannis.dogviprefactored.owner.profile.OwnerProfileActivity;
 import com.dogvip.giannis.dogviprefactored.owner.profile.OwnerProfileActivityModule;
+import com.dogvip.giannis.dogviprefactored.pet.PetFormActivity;
 import com.dogvip.giannis.dogviprefactored.utilities.notification.NotificationUtlsModule;
 
 import dagger.Module;
@@ -38,4 +39,9 @@ abstract class ActivityBuilder {
     @ContributesAndroidInjector(modules = {OwnerProfileActivityModule.class, AccountManagerModule.class})
     abstract OwnerProfileActivity bindOwnerProfileActivity();
 
+    @PerActivity
+    @ContributesAndroidInjector
+    abstract PetFormActivity bindPetFormActivity();
+
 }
+

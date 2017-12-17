@@ -1,6 +1,7 @@
-package com.dogvip.giannis.dogviprefactored.utilities.ui.alertdialogcontroller;
+package com.dogvip.giannis.dogviprefactored.utilities.ui.alertdialogcontroller.owner;
 
 import com.dogvip.giannis.dogviprefactored.owner.profile.OwnerProfileContract;
+import com.dogvip.giannis.dogviprefactored.utilities.ui.alertdialogcontroller.AlertDialogCommand;
 
 import javax.inject.Inject;
 

@@ -54,6 +54,8 @@ public class AppConfig {
     public static final int ERROR_CITY_NO_MATCH = -302;
     private static final int ERROR_NO_OWNER_EXISTS = -320;
 
+    public static final int EXTERNAL_CONTENT_URI = 910;
+
     public static final int GOOGLE_REQ_CODE = 9001;
 
     public static final String[] cities = {

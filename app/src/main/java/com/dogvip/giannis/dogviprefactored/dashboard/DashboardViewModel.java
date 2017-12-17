@@ -2,7 +2,6 @@ package com.dogvip.giannis.dogviprefactored.dashboard;
 
 import android.arch.persistence.room.EmptyResultSetException;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import com.dogvip.giannis.dogviprefactored.config.AppConfig;
@@ -16,8 +15,7 @@ import com.dogvip.giannis.dogviprefactored.roompersistencedata.entities.UserDevi
 import com.dogvip.giannis.dogviprefactored.services.JobConfiguration;
 import com.dogvip.giannis.dogviprefactored.utilities.errorhandling.RetryWithDelay;
 import com.dogvip.giannis.dogviprefactored.utilities.ui.MyAlertDialogFragment;
-import com.dogvip.giannis.dogviprefactored.utilities.ui.alertdialogcontroller.AlertDialogController;
-import com.dogvip.giannis.dogviprefactored.utilities.ui.alertdialogcontroller.LogoutDialogCommand;
+import com.dogvip.giannis.dogviprefactored.utilities.ui.alertdialogcontroller.dashboard.LogoutDialogCommand;
 
 import javax.inject.Inject;
 

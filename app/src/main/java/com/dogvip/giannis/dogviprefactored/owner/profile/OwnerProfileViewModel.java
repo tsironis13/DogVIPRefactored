@@ -11,7 +11,6 @@ import com.dogvip.giannis.dogviprefactored.BR;
 import com.dogvip.giannis.dogviprefactored.R;
 import com.dogvip.giannis.dogviprefactored.config.AppConfig;
 import com.dogvip.giannis.dogviprefactored.lifecycle.Lifecycle;
-import com.dogvip.giannis.dogviprefactored.login.signin.SignInViewModel;
 import com.dogvip.giannis.dogviprefactored.pojo.BaseRequest;
 import com.dogvip.giannis.dogviprefactored.pojo.Response;
 import com.dogvip.giannis.dogviprefactored.pojo.owner.profile.DeleteOwnerRequest;
@@ -21,15 +20,12 @@ import com.dogvip.giannis.dogviprefactored.responsecontroller.ResponseController
 import com.dogvip.giannis.dogviprefactored.responsecontroller.owner.DeleteOwnerCommand;
 import com.dogvip.giannis.dogviprefactored.responsecontroller.owner.OwnerProfileDetailsCommand;
 import com.dogvip.giannis.dogviprefactored.roompersistencedata.DogVipRoomDatabase;
-import com.dogvip.giannis.dogviprefactored.roompersistencedata.entities.UserData;
 import com.dogvip.giannis.dogviprefactored.utilities.errorhandling.ErrorHandler;
 import com.dogvip.giannis.dogviprefactored.utilities.errorhandling.throwables.NoOnwerExistsException;
 import com.dogvip.giannis.dogviprefactored.utilities.network.NetworkUtls;
 import com.dogvip.giannis.dogviprefactored.utilities.errorhandling.RetryWithDelay;
 import com.dogvip.giannis.dogviprefactored.utilities.ui.MyAlertDialogFragment;
-import com.dogvip.giannis.dogviprefactored.utilities.ui.alertdialogcontroller.DeleteOwnerDialogCommand;
-
-import org.reactivestreams.Subscription;
+import com.dogvip.giannis.dogviprefactored.utilities.ui.alertdialogcontroller.owner.DeleteOwnerDialogCommand;
 
 import java.util.concurrent.TimeUnit;
 
@@ -39,7 +35,6 @@ import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.processors.AsyncProcessor;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
@@ -137,7 +132,7 @@ public class OwnerProfileViewModel extends BaseObservable implements OwnerProfil
     }
 
     @Override
-    public void pickDialogByType(MyAlertDialogFragment dialogFragment, FragmentManager fragmentManager, String tag, String type) {
+    public void pickDialogByType(MyAlertDialogFragment dialogFragment, String type) {
         if (type.equals("delete_owner")) {
             dialogFragment.setCommand(deleteOwnerDialogCommand);
         }

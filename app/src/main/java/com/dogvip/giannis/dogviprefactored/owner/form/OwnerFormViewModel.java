@@ -3,6 +3,8 @@ package com.dogvip.giannis.dogviprefactored.owner.form;
 import android.accounts.NetworkErrorException;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 
@@ -11,7 +13,6 @@ import com.dogvip.giannis.dogviprefactored.BR;
 import com.dogvip.giannis.dogviprefactored.R;
 import com.dogvip.giannis.dogviprefactored.config.AppConfig;
 import com.dogvip.giannis.dogviprefactored.lifecycle.Lifecycle;
-import com.dogvip.giannis.dogviprefactored.owner.profile.OwnerProfileViewModel;
 import com.dogvip.giannis.dogviprefactored.pojo.BaseRequest;
 import com.dogvip.giannis.dogviprefactored.pojo.Response;
 import com.dogvip.giannis.dogviprefactored.pojo.account.UserAccount;
@@ -28,6 +29,9 @@ import com.dogvip.giannis.dogviprefactored.utilities.errorhandling.ErrorHandler;
 import com.dogvip.giannis.dogviprefactored.utilities.errorhandling.throwables.NoOnwerExistsException;
 import com.dogvip.giannis.dogviprefactored.utilities.network.NetworkUtls;
 import com.dogvip.giannis.dogviprefactored.utilities.errorhandling.RetryWithDelay;
+import com.dogvip.giannis.dogviprefactored.utilities.ui.MyAlertDialogFragment;
+import com.dogvip.giannis.dogviprefactored.utilities.ui.alertdialogcontroller.owner.DeleteOwnerImageDialogCommand;
+import com.dogvip.giannis.dogviprefactored.utilities.ui.alertdialogcontroller.owner.UploadImageOwnerDialogCommand;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -38,7 +42,6 @@ import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.processors.AsyncProcessor;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
@@ -58,6 +61,7 @@ public class OwnerFormViewModel extends BaseObservable implements OwnerFormContr
     private Disposable mDisp, mTempDisp;
     private int retryCount = 0;
     private int maxRetries = 3;
+    private MyAlertDialogFragment myAlertDialogFragment;
     @Inject
     ResponseController responseController;
     @Inject
@@ -78,6 +82,10 @@ public class OwnerFormViewModel extends BaseObservable implements OwnerFormContr
     SubmitOwnerFormResponse ownerFormResponse;
     @Inject
     ErrorHandler retryHelper;
+    @Inject
+    DeleteOwnerImageDialogCommand deleteOwnerImageDialogCommand;
+    @Inject
+    UploadImageOwnerDialogCommand uploadImageOwnerDialogCommand;
 
     @Inject
     public OwnerFormViewModel(OwnerFormRequestManager ownerFormRequestManager) {
@@ -90,6 +98,8 @@ public class OwnerFormViewModel extends BaseObservable implements OwnerFormContr
         submitNewOwnerCommand.setViewCallback(mViewCallback);
         editOwnerCommand.setViewCallback(mViewCallback);
         ownerFormDetailsCommand.setViewCallback(mViewCallback);
+        deleteOwnerImageDialogCommand.setViewCallback(mViewCallback);
+        uploadImageOwnerDialogCommand.setViewCallback(mViewCallback);
     }
 
     @Override
@@ -112,12 +122,54 @@ public class OwnerFormViewModel extends BaseObservable implements OwnerFormContr
         submitNewOwnerCommand.clearCallback();
         editOwnerCommand.clearCallback();
         ownerFormDetailsCommand.clearCallback();
+        deleteOwnerImageDialogCommand.clearCallback();
+        uploadImageOwnerDialogCommand.clearCallback();
     }
 
 //    @Override
 //    public void onProcessing() {
 //        mViewCallback.onProcessing();
 //    }
+
+
+    @Override
+    public void initializeAlertDialog() {
+        myAlertDialogFragment = MyAlertDialogFragment.newInstance();
+    }
+
+    @Override
+    public void pickDialogByType(MyAlertDialogFragment dialogFragment, String type) {
+        if (type.equals("upload_image")) {
+            dialogFragment.setCommand(uploadImageOwnerDialogCommand);
+        } else if (type.equals("delete_image")) {
+            dialogFragment.setCommand(deleteOwnerImageDialogCommand);
+        }
+    }
+
+    @Override
+    public void setAlertDialogMsgs(String dialogTtl, String dialogMsg, String dialogNegativeText, String dialogPositiveText) {
+        MyAlertDialogFragment.setDialogMsgs(dialogTtl, dialogMsg, dialogNegativeText, dialogPositiveText);
+    }
+
+    @Override
+    public void showDeleteOwnerImageDialog(FragmentManager fragmentManager, String tag) {
+        if (myAlertDialogFragment == null) initializeAlertDialog();
+        myAlertDialogFragment.setCommand(deleteOwnerImageDialogCommand);
+        Bundle bundle = new Bundle();
+        bundle.putString("type", "delete_image");
+        myAlertDialogFragment.setArguments(bundle);
+        myAlertDialogFragment.show(fragmentManager, tag);
+    }
+
+    @Override
+    public void showUploadImageDialog(FragmentManager fragmentManager, String tag) {
+        if (myAlertDialogFragment == null) initializeAlertDialog();
+        myAlertDialogFragment.setCommand(uploadImageOwnerDialogCommand);
+        Bundle bundle = new Bundle();
+        bundle.putString("type", "upload_image");
+        myAlertDialogFragment.setArguments(bundle);
+        myAlertDialogFragment.show(fragmentManager, tag);
+    }
 
     @Override
     public void setRequestState(int state) {
@@ -180,7 +232,7 @@ public class OwnerFormViewModel extends BaseObservable implements OwnerFormContr
     }
 
     private void prepareRequest(final Flowable<Response> responseFlowable) {
-        Log.e(debugTag, "prepare request ");
+//        Log.e(debugTag, "prepare request ");
         mProcessor = AsyncProcessor.create();
         mDisp = mProcessor
                         .subscribeOn(Schedulers.io())

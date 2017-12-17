@@ -37,6 +37,11 @@
     <string name="delete_owner_dialog_msg">Ο ιδιοκτήτης και όλα τα κατοικίδια του θα διαγραφούν οριστικά.</string>
     <string name="yes">ΝΑΙ</string>
     <string name="no">ΟΧΙ</string>
+    <string name="upload_image_dialog_title">Νέα Φωτογραφία</string>
+    <string name="upload_image_dialog_msg">Βγάλε νέα φωτογραφία ή επίλεξε μία υπάρχουσα από τη βιβλιοθήκη.</string>
+    <string name="gallery">GALLERY</string>
+    <string name="camera">ΚΑΜΕΡΑ</string>
+    <string name="image_choose_label">Επιλογή φωτογραφίας</string>
 
     <string name="email_plhldr"><u>Email</u></string>
     <string name="password_plhldr"><u>Κωδικός</u></string>
@@ -98,13 +103,26 @@
     <string name="birthdate_gr">ΗΜ. ΓΕΝΝΗΣΗΣ</string>
     <string name="name_gr">ΟΝΟΜΑ</string>
     <string name="phone_gr">ΤΗΛΕΦΩΝΟ</string>
+    <string name="race_gr">ΦΥΛΗ</string>
+    <string name="half_blood_gr">ΗΜΙΑΙΜΟ</string>
+    <string name="microchip_gr">ΑΡΙΘΜΟΣ MICROCHIP</string>
+    <string name="genre_gr">ΦΥΛΛΟ</string>
+    <string name="weight_gr">ΒΑΡΟΣ ΣΕ ΚΙΛΑ</string>
+    <string name="neutered_gr">ΣΤΕΙΡΩΜΕΝΟ</string>
+    <string name="chrctr_gr">ΧΑΡΑΚΤΗΡΑΣ</string>
     <string name="save">ΑΠΟΘΗΚΕΥΣΗ</string>
     <string name="image_size_limit">Όριο εικόνας: 6MB</string>
     <string name="name_plhldr">*<u>Όνομα</u></string>
     <string name="surname_plhldr">*<u>Επίθετο</u></string>
     <string name="birth_date_plhldr">*<u>Ημ. γέννησης</u></string>
+    <string name="birth_date_notreq_plhldr">Ημ. γέννησης</string>
     <string name="city_plhldr"><u>Πόλη</u></string>
     <string name="phone_plhldr"><u>Τηλέφωνο</u></string>
+    <string name="race_plhldr">*<u>Φυλή</u></string>
+    <string name="microchip_plhldr"><u>Αριθμός Microchip</u></string>
+    <string name="weight_plhldr"><u>Βάρος</u></string>
+    <string name="chrctr_plhldr"><u>Χαρακτήρας</u></string>
+    <string name="show_images">φωτογραφιες</string>
     <string name="edit">Επεξεργασία</string>
     <string name="delete">Διαγραφή</string>
 

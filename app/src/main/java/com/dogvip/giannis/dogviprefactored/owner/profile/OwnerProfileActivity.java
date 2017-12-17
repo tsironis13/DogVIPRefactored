@@ -18,14 +18,18 @@ import com.dogvip.giannis.dogviprefactored.databinding.ActivityOwnerprofileBindi
 import com.dogvip.giannis.dogviprefactored.lifecycle.Lifecycle;
 import com.dogvip.giannis.dogviprefactored.owner.form.OwnerFormActivity;
 import com.dogvip.giannis.dogviprefactored.owner.form.OwnerFormRetainFragment;
+import com.dogvip.giannis.dogviprefactored.pet.PetFormActivity;
 import com.dogvip.giannis.dogviprefactored.pojo.BaseRequest;
 import com.dogvip.giannis.dogviprefactored.pojo.owner.profile.DeleteOwnerRequest;
 import com.dogvip.giannis.dogviprefactored.pojo.owner.profile.OwnerProfileDetailsResponse;
+import com.dogvip.giannis.dogviprefactored.utilities.eventbus.RxEventBus;
 import com.dogvip.giannis.dogviprefactored.utilities.ui.MyAlertDialogFragment;
 import com.dogvip.giannis.dogviprefactored.utilities.ui.UIUtls;
+import com.jakewharton.rxbinding2.view.RxView;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -60,7 +64,7 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
             Log.e(debugTag, "savedInstanceState is not null");
             MyAlertDialogFragment dialogFragment = (MyAlertDialogFragment) getSupportFragmentManager().findFragmentByTag(getResources().getString(R.string.alert_dialog_fgmt));
             if (dialogFragment != null) {
-                mViewModel.pickDialogByType(dialogFragment, getSupportFragmentManager(), getResources().getString(R.string.alert_dialog_fgmt), dialogFragment.getArguments().getString("type"));
+                mViewModel.pickDialogByType(dialogFragment, dialogFragment.getArguments().getString("type"));
             } else {
                 mViewModel.initializeAlertDialog();
             }
@@ -78,6 +82,16 @@ public class OwnerProfileActivity extends BaseActivity implements OwnerProfileCo
         baseRequest.setAuthtoken(mAccountManager.getAccountDetails().getToken());
         baseRequest.setAction(getResources().getString(R.string.get_my_owner_details));
         mViewModel.fetchOwnerDetails(baseRequest, mAccountManager.getAccountDetails().getUserId());
+        Disposable disp = RxView.clicks(mBinding.addPetFlbtn).subscribe(o -> {
+            startActivity(new Intent(this, PetFormActivity.class));
+        });
+        RxEventBus.add(this, disp);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        RxEventBus.unregister(this);
     }
 
     @Override

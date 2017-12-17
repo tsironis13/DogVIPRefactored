@@ -76,19 +76,19 @@
                         android:contentDescription="@string/image_cont_desc" />
 
                     <TextView
-                        android:id="@+id/customageTtv"
+                        android:id="@+id/ageTtv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/profileImgv"
                         android:textColor="@android:color/white"
-                        android:text="custom age"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        app:textAge="@{viewmodel.ownerDetails.data.age}" />
 
                     <TextView
                         android:id="@+id/cityTtv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/customageTtv"
+                        android:layout_below="@+id/ageTtv"
                         android:textColor="@android:color/white"
                         android:text="@{viewmodel.ownerDetails.data.city}"
                         android:textSize="14sp" />

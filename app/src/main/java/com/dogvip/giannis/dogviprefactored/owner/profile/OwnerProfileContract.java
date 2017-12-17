@@ -27,7 +27,7 @@ public interface OwnerProfileContract {
         void onRetry();
         void setRequestState(int state);
         void initializeAlertDialog();
-        void pickDialogByType(MyAlertDialogFragment dialogFragment, FragmentManager fragmentManager, String tag, String type);
+        void pickDialogByType(MyAlertDialogFragment dialogFragment, String type);
         void showDeleteOwnerDialog(FragmentManager fragmentManager, String tag);
         void setAlertDialogMsgs(String dialogTtl, String dialogMsg, String dialogNegativeText, String dialogPositiveText);
         void fetchOwnerDetails(BaseRequest request, int userId);

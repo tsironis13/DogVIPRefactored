@@ -1,6 +1,7 @@
-package com.dogvip.giannis.dogviprefactored.utilities.ui.alertdialogcontroller;
+package com.dogvip.giannis.dogviprefactored.utilities.ui.alertdialogcontroller.dashboard;
 
 import com.dogvip.giannis.dogviprefactored.dashboard.DashboardContract;
+import com.dogvip.giannis.dogviprefactored.utilities.ui.alertdialogcontroller.AlertDialogCommand;
 
 import java.io.Serializable;
 
